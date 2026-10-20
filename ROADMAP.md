@@ -10,3 +10,7 @@
 - M4 gacha: 2 banners, pity, duplicates, companions
 - M5 areas 2-3, bosses 2-3, 30 weapons
 - M6 polish, audio, credits, perf
+
+## Status 2026-10-20 (CINDER v0.3)
+Done: combat core, 12 enemy types, 3 bosses (Corvane, Gorrad, Vael) with arenas, 5 shrines, ~24 weapons (7 movesets), 10 spirits, 2 banners with pity, levelling, bloodstain-style cinder recovery, credits screen, devlog, bug form.
+Next: 30+ weapons, caves/interiors (Barrow Deeps catacomb), companions banner (3rd), 20 spirits, NPC lore vendor, cliffs/hidden paths, gamepad polish, minimap, performance pass.

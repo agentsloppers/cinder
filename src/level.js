@@ -26,7 +26,16 @@ export const Level={ shrines:[], gates:[], torches:[], chests:[], spawns:[], dec
   for(let gz=-HALF+3;gz<HALF-3;gz+=2.1)for(let gx=-HALF+3;gx<HALF-3;gx+=2.1){ const x=gx+(R()-0.5)*2,z=gz+(R()-0.5)*2; const h=Terrain.h(x,z); if(h>50||pathD(x,z)<2.2||Terrain.slope(x,z)>0.6)continue; const f=fbm(x/22,z/22,2); const near=this.nearFlat(x,z,4);
    if(near&&near.id==='chapel'&&R()<0.7)continue; if(R()<0.34+f*0.3) Props.place(pick(GRASS),x,h,z,R()*6.28,1.6+R()*1.4,{grass:true,sway:0.8,cast:false}) }
   for(let i=0;i<260;i++){ const x=(R()-0.5)*(SIZE-20),z=(R()-0.5)*(SIZE-20); const h=Terrain.h(x,z); if(this.nearFlat(x,z,6)||pathD(x,z)<3)continue; Props.place(pick(BUSH),x,h,z,R()*6.28,3+R()*2,{sway:0.6,cast:false}) }
-  this.ember(R); this.chapel(R); this.waypoints(R);
+  this.ember(R); this.chapel(R); this.waypoints(R); this.arenas(R);
+ },
+ arenas(R){ // Barrow Deeps and Summit approaches: bonfires at the road ends, ruined boss rings around Gorrad and Vael
+  this.shrine('barrow','Barrow Mouth',-196,-28,R);
+  this.shrine('summit','Foot of the Stilled Heart',0,-176,R);
+  const ring=(cx,cz,rad,n,gap,pil,tc)=>{ for(let i=0;i<n;i++){ const a=i/n*Math.PI*2; const x=cx+Math.cos(a)*rad,z=cz+Math.sin(a)*rad; const gp=Math.abs(Math.atan2(Math.sin(a-gap),Math.cos(a-gap))); if(gp<0.38)continue; if(Terrain.slope(x,z)>0.8)continue; const h=Terrain.h(x,z);
+    const r=R(); const m=r<0.45?pil:r<0.7?'wall_broken':r<0.85?'column':'rubble_large'; this.P(m,x,h-0.2,z,-a+Math.PI/2,1.5,{col:{r:1.1,h:6}});
+    if(i%3===0){ this.P('torch_lit',x*0.96+cx*0.04,h+1.6,z*0.96+cz*0.04,0,2.4,{cast:false}); this.torches.push({x:x,y:h+3,z:z,c:tc}) } } };
+  ring(-196,-60,24,22,Math.PI/2,'pillar_decorated',0xff6a2a);
+  ring(0,-232,28,26,Math.PI/2,'pillar',0xa070ff);
  },
  P(m,x,y,z,ry=0,s=1,o={}){ Props.place(D+m,x,y,z,ry,s,o) },
  // checkpoint: ring of pillars around a flame
