@@ -10,6 +10,7 @@ const ROCKS=['Rock_1_A','Rock_1_C','Rock_1_E','Rock_1_G','Rock_1_J','Rock_2_A','
 const BUSH=['Bush_1_A','Bush_1_C','Bush_2_A','Bush_2_C','Bush_3_A','Bush_4_A','Bush_4_C'].map(n=>F+n+'_Color1');
 const GRASS=['Grass_1_A','Grass_1_B','Grass_1_C','Grass_2_A','Grass_2_B','Grass_2_C'].map(n=>F+n+'_Color1');
 
+import {CHESTS} from './chests.js';
 export const Level={ shrines:[], gates:[], torches:[], chests:[], spawns:[], decor:[],
  nearFlat(x,z,pad=0){ for(const f of FLATS){ if(Math.hypot(x-f.x,z-f.z)<f.r+pad) return f } return null },
  generate(){
@@ -36,7 +37,14 @@ export const Level={ shrines:[], gates:[], torches:[], chests:[], spawns:[], dec
     if(i%3===0){ this.P('torch_lit',x*0.96+cx*0.04,h+1.6,z*0.96+cz*0.04,0,2.4,{cast:false}); this.torches.push({x:x,y:h+3,z:z,c:tc}) } } };
   ring(-196,-60,24,22,Math.PI/2,'pillar_decorated',0xff6a2a);
   ring(0,-232,28,26,Math.PI/2,'pillar',0xa070ff);
+  this.treasure(R);
  },
+ treasure(R){ // hidden chests, each in a little ruin on the flattest ground nearby
+  for(const c of CHESTS){ let b={x:c.x,z:c.z,s:9}; for(let r=0;r<=14;r+=2)for(let a=0;a<6.28;a+=0.5){ const x=Math.round(c.x+Math.cos(a)*r),z=Math.round(c.z+Math.sin(a)*r); const s=Terrain.slope(x,z); if(s<b.s-0.02&&Terrain.h(x,z)>-0.5)b={x,z,s} }
+   const y=Terrain.h(b.x,b.z), ry=R()*6.28; this.P('floor_tile_large',b.x,y-0.05,b.z,ry,1.4); this.P('chest_gold',b.x,y,b.z,ry,1.6,{col:{r:0.9,h:1.2}});
+   for(let i=0;i<3;i++){ const a=ry+i*2.1+0.6, x=b.x+Math.cos(a)*3.2, z=b.z+Math.sin(a)*3.2; this.P(i===0?'column':i===1?'rubble_large':'wall_broken',x,Terrain.h(x,z)-0.15,z,R()*6,1.5,i===0?{col:{r:1,h:5}}:{}) }
+   this.P('torch_lit',b.x+Math.cos(ry+3)*2,y+1.2,b.z+Math.sin(ry+3)*2,0,2.2,{cast:false}); this.torches.push({x:b.x,y:y+3,z:b.z,c:0xffc27a});
+   this.chests.push({...c,x:b.x,z:b.z,y}) } },
  P(m,x,y,z,ry=0,s=1,o={}){ Props.place(D+m,x,y,z,ry,s,o) },
  // checkpoint: ring of pillars around a flame
  shrine(id,name,x,z,R,opt={}){ const y=Terrain.h(x,z); const n=6,rad=5.2; for(let i=0;i<n;i++){ const a=i/n*Math.PI*2+0.3; const px=x+Math.cos(a)*rad,pz=z+Math.sin(a)*rad; if(R()<0.8){ this.P(R()<0.5?'pillar':'pillar_decorated',px,Terrain.h(px,pz),pz,-a+Math.PI/2,1,{col:{r:0.9,h:5}}) } else this.P('rubble_half',px,Terrain.h(px,pz),pz,R()*6,1.6) }

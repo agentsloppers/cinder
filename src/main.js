@@ -9,6 +9,7 @@ import {Projectiles} from './projectiles.js';
 import {Input} from './input.js';
 import {Audio} from './audio.js';
 import {G} from './state.js';
+import {WEAPON_BY_ID} from './data/weapons.js';
 import {Save} from './save.js';
 import './player_move.js'; import './player_combat.js'; import './enemy_ai.js';
 import {createPlayer} from './player.js';
@@ -56,7 +57,7 @@ async function begin(cont){
   Audio.init(); Audio.resume(); Audio.startMusic&&Audio.startMusic();
   if(!cont) Save.wipe(); else Save.load();
   applySave(); await P.equip(P.weaponId);
-  const S=Save.d; lastShrine=Level.shrines.find(s=>s.id===S.shrine)||Level.shrines[0];
+  const S=Save.d; if(S.flaskBonus){ P.maxFlasks=4+S.flaskBonus; P.flasks=P.maxFlasks } lastShrine=Level.shrines.find(s=>s.id===S.shrine)||Level.shrines[0];
   for(const [k,v] of Object.entries(S.flags||{}))G.flags[k]=v;
   for(const e of World.enemies){ if(e.boss&&G.flags[e.def.flag]){ e.hidden=true; e.alive=false; e.root.visible=false } }
   const sx=lastShrine.x, sz=lastShrine.z+(cont?4:0);
@@ -91,9 +92,19 @@ G.on('playerDied',()=>{
 G.on('bossDown',e=>{ UI.bannerShow('ENEMY FELLED',e.name,'felled'); Audio.play('boss_down'); P.cinders+=e.def.cinders||2000; Save.d.embers+=e.def.embers||12; saveGame(); });
 G.on('kill',e=>{ Save.d.kills=(Save.d.kills||0)+1 });
 
+function openChest(c){
+  const S=Save.d; (S.chests||(S.chests={}))[c.id]=1; P.startInteract('Interact',1.0); const L=c.loot, got=[];
+  setTimeout(()=>{ Audio.play('pickup');
+   if(L.cinders){ P.cinders+=L.cinders; got.push(L.cinders+' cinders') }
+   if(L.embers){ S.embers+=L.embers; got.push(L.embers+' embers') }
+   if(L.flask){ P.maxFlasks=(P.maxFlasks||3)+L.flask; P.flasks=Math.min(P.maxFlasks,P.flasks+L.flask); S.flaskBonus=(S.flaskBonus||0)+L.flask; got.push('+'+L.flask+' ember flask') }
+   if(L.weapon){ const w=WEAPON_BY_ID[L.weapon]; if(!S.owned[L.weapon]){ S.owned[L.weapon]=1; S.refine[L.weapon]=0; got.push(w.name+' (new)') } else { S.embers+=4; got.push(w.name+' already owned: 4 embers') } }
+   UI.bannerShow('TREASURE',got.join(' · ')+'<br><i style="opacity:.7;font-size:.6em">found in '+c.at+'</i>','felled'); saveGame() },600);
+}
 function interactCheck(){
   const {s,d}=nearestShrine(); G.nearInteract=null;
   if(P.state==='free'&&!P.dead&&d<3.8){ G.nearInteract={label:'Rest at '+s.name,use:()=>{ P.startInteract('Interact',1.0); setTimeout(()=>restAt(s),700) }} }
+  if(!G.nearInteract&&P.state==='free'&&!P.dead){ const op=Save.d.chests||(Save.d.chests={}); for(const c of Level.chests){ if(op[c.id])continue; if(Math.hypot(c.x-P.x,c.z-P.z)<2.8){ G.nearInteract={label:'Open chest',use:()=>openChest(c)}; break } } }
   UI.prompt(G.nearInteract?`<b>E</b> ${G.nearInteract.label}`:'');
   const st=G.stain; if(st&&!P.dead&&Math.hypot(st.x-P.x,st.z-P.z)<2.4){ P.cinders+=st.amt; UI.toast('Cinders recovered: '+st.amt,'#ffd27a'); Audio.play('pickup'); G.stain=null; World.stain.visible=false; Save.d.stain=null; saveGame() }
 }
