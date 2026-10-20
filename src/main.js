@@ -1,4 +1,5 @@
 // CINDER entry: boot, main loop, shrines, death/stain, menus.
+import {Minimap} from './minimap.js';
 import {THREE,Engine} from './engine.js';
 import {Assets} from './assets.js';
 import {Terrain} from './terrain.js';
@@ -16,14 +17,26 @@ import {createPlayer} from './player.js';
 import {Cam} from './camera.js';
 import {World} from './world.js';
 import {UI} from './ui.js';
+import {Tele} from './telemetry.js';
+import {Spirits} from './spirits.js';
+import {HALF} from './terrain.js';
 
 const $=id=>document.getElementById(id);
 const canvas=$('c');
 let P=null, started=false, saveT=0, deadT=0, lastShrine=null;
 const prog=(t,n,m)=>{ $('lt').textContent=t; $('lbar').style.width=(100*n/m)+'%' };
 
+function fail(msg,err){
+  console.error('CINDER boot failed:',err||msg);
+  try{ fetch('/api/tele',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({ev:'bootfail',msg:String(msg).slice(0,200),ua:navigator.userAgent.slice(0,120)})}).catch(()=>{}) }catch(e){}
+  $('lbarw').style.display='none';
+  $('lt').innerHTML='<div style="max-width:420px;text-align:center;line-height:1.6;color:#d9b25f">The flame failed to catch.<br><span style="color:#9a8f80;font-size:12px">'+msg+'</span><br><br><button onclick="location.reload()" style="font:600 13px Cinzel,serif;letter-spacing:.15em;padding:8px 18px;background:#1b1410;color:#d9b25f;border:1px solid #d9b25f;cursor:pointer">RETRY</button>  <button onclick="localStorage.setItem(\'ch_quality\',\'low\');location.reload()" style="font:600 13px Cinzel,serif;letter-spacing:.15em;padding:8px 18px;background:#1b1410;color:#d9b25f;border:1px solid #6a5a3a;cursor:pointer">LOW GRAPHICS</button></div>';
+}
 async function boot(){
-  Engine.init(canvas); Input.init(canvas); Input.wantLock=false; G.cam=Cam; UI.init(); Floaters.init($('ui'));
+  try{ await boot2() }catch(e){ fail(/WebGL/i.test(e&&e.message||'')?'Your browser could not create a WebGL context. Enable hardware acceleration and retry.':('Error: '+(e&&e.message||e)),e) }
+}
+async function boot2(){
+  Engine.init(canvas); Input.init(canvas); Input.wantLock=false; G.cam=Cam; UI.init(); Floaters.init($('ui')); Spirits.init();
   Save.load();
   prog('Raising the land…',1,8); await tick();
   Terrain.build(Engine.scene);
@@ -78,16 +91,17 @@ function restAt(s){
   for(const e of World.enemies){ if(!e.hidden) e.reset() } Projectiles.clear(); P.lock=null; G.boss=null;
   saveGame(); openHub(s);
 }
+function unstuck(why){ UI.close(); const s=lastShrine||Level.shrines[0]; P.respawn(s.x,s.z+4,0); P.vx=P.vz=0; Cam.snap(P); P.lock=null; saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.(); try{ UI.toast&&UI.toast('Returned to '+s.name) }catch(e){} Tele.send('unstuck',why) }
 function openHub(shrine,tab){
   G.mode='rest'; Input.wantLock=false;
-  UI.hub({P,shrine,shrines:Level.shrines,tab,onClose:()=>{ UI.close(); saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.() },
+  UI.hub({P,shrine,shrines:Level.shrines,tab,onUnstuck:()=>{ unstuck('menu') },onClose:()=>{ UI.close(); saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.() },
     onWarp:s=>{ UI.close(); lastShrine=s; P.respawn(s.x,s.z+4,0); Cam.snap(P); for(const e of World.enemies){ if(!e.hidden)e.reset() } saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.() }});
 }
 
-G.on('playerDied',()=>{
+G.on('playerDied',()=>{ Spirits.reset(); P.ward=null;
   const S=Save.d; deadT=0; G.mode='dead';
   const amt=Math.floor(P.cinders); if(amt>0||G.stain){ G.stain={x:P.x,z:P.z,amt:amt+(0)}; if(amt===0&&S.stain)G.stain=S.stain; placeStain(G.stain) }
-  P.cinders=0; saveGame(); UI.diedScreen(true);
+  Tele.send('death',[Math.round(P.x),Math.round(P.z),amt]); P.cinders=0; saveGame(); UI.diedScreen(true);
 });
 G.on('bossDown',e=>{ UI.bannerShow('ENEMY FELLED',e.name,'felled'); Audio.play('boss_down'); P.cinders+=e.def.cinders||2000; Save.d.embers+=e.def.embers||12; const gt=[]; for(const id of e.def.drops||[]){ const w=WEAPON_BY_ID[id]; if(w&&!Save.d.owned[id]){ Save.d.owned[id]=1; Save.d.refine[id]=0; gt.push(w.name) } } if(gt.length)setTimeout(()=>UI.bannerShow('SPOILS',gt.join(' · '),'felled'),3200); saveGame(); });
 G.on('kill',e=>{ Save.d.kills=(Save.d.kills||0)+1 });
@@ -120,14 +134,18 @@ function loop(now){
     Engine.render(dt); Input.endFrame(); return;
   }
   if(G.mode==='play'||G.mode==='dead'){
-    if(Input.pressed.menu&&G.mode==='play'){ openHub(null) }
+    if(Input.pressed.map&&G.mode==='play'){ G.mode='rest'; G.mapOpen=true; Input.wantLock=false; document.exitPointerLock&&document.exitPointerLock(); Minimap.openFull(P) }
+    else if(Input.pressed.menu&&G.mode==='play'){ openHub(null) }
     else if(Input.pressed.summon&&G.mode==='play'){ openHub(null,'summon') }
   }
+  if(G.mapOpen&&(Input.pressed.map||Input.pressed.menu)){ G.mapOpen=false; Minimap.closeFull(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.() }
   if(G.mode==='play'||G.mode==='dead'||G.mode==='rest'){
     const ts=FX.timeScale(dt); const sdt=G.mode==='rest'?0:dt*ts; G.time+=sdt;
     if(G.mode!=='rest'){
       Cam.update(sdt||0.0001,P);
-      P.update(sdt,Cam.yaw);
+      P.update(sdt,Cam.yaw); Spirits.update(sdt,P);
+      if(G.mode==='play'&&(!isFinite(P.x+P.y+P.z)||Math.abs(P.x)>HALF-2||Math.abs(P.z)>HALF-2||P.y<-5||P.y<Terrain.h(P.x,P.z)-30)) unstuck('oob');
+      if(G.mode==='play') Tele.sample(P,sdt);
       for(const e of G.enemies) e.update(sdt,P);
       Projectiles.update(sdt);
       if(G.mode==='play') interactCheck();

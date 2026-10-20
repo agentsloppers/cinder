@@ -45,7 +45,7 @@ Object.assign(PlayerProto,{
   if(t>=m.end||a.time>=a.getClip().duration-0.02){ this.state='free'; this.atk=null; if(this.trail)this.trail.on=false }
  },
  guardBash(m){ return null },
- damageOf(m){ const w=this.weapon; const rf=this.refine[w.id]||0; let d=(w.atk*(1+0.09*rf)+stBonus(w,this.stats))*m.dmg; if(this.buff.t>0)d*=1.3; return d*(0.94+Math.random()*0.12) },
+ damageOf(m){ const w=this.weapon; const rf=this.refine[w.id]||0; let d=(w.atk*(1+0.09*rf)+stBonus(w,this.stats))*m.dmg; if(this.buff.t>0)d*=(this.buff.mul||1.3); return d*(0.94+Math.random()*0.12) },
  strike(m){
   const A=this.atk; const reachBonus=this.weapon.len>1.8?0.3:0; const px=this.x,pz=this.z;
   for(const e of G.enemies){ if(!e.alive||e.hidden||A.hit.has(e))continue; const dx=e.x-px,dz=e.z-pz,d=Math.hypot(dx,dz); const R=m.reach+reachBonus+e.r; if(d>R)continue;
@@ -80,7 +80,7 @@ Object.assign(PlayerProto,{
  hurt(info){
   if(this.dead||G.mode==='cutscene')return {hit:false};
   if(this.invuln>0&&!info.fall&&!info.unavoidable){ return {hit:false,dodged:true} }
-  let dmg=info.dmg*(G.difficulty||1); const dir=Math.atan2(info.x-this.x,info.z-this.z);
+  let dmg=info.dmg*(G.difficulty||1); if(this.ward&&this.ward.t>0)dmg*=1-this.ward.cut; const dir=Math.atan2(info.x-this.x,info.z-this.z);
   const inFront=Math.abs(angDiff(this.yaw,dir))<1.05;
   if(this.guarding&&inFront&&!info.unblockable&&this.state==='free'){
    if(this.guardT<0.22&&info.kind==='melee'&&info.src&&info.src.onParried){ // PARRY
