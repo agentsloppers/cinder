@@ -1,0 +1,22 @@
+// Movesets: each move references an animation clip; hit windows come from data/clipinfo.json (measured from the rig).
+// spd = clip playback speed. dmg = motion multiplier. st = stamina. poise = poise damage. reach (m), arc (deg). lunge (m). chain = clip time when the next input is accepted. end = clip time the move ends.
+import info from './clipinfo.json';
+const M=(clip,o)=>{const i=info[clip]||{dur:1,hitA:0.3,hitB:0.45}; const spd=o.spd||1; return {clip,spd,a:o.a??i.hitA,b:o.b??i.hitB,dmg:1,st:12,poise:20,reach:2.2,arc:100,lunge:0.6,chain:(o.b??i.hitB)+0.08,end:Math.min(i.dur,(o.b??i.hitB)+0.5),...o}};
+export const MOVESETS={
+ sword:{stance:'Idle_A',light:[M('Melee_1H_Attack_Slice_Diagonal',{spd:1.3,dmg:1,st:11}),M('Melee_1H_Attack_Slice_Horizontal',{spd:1.25,dmg:1.05,st:11,arc:140}),M('Melee_1H_Attack_Stab',{spd:1.2,dmg:1.25,st:13,reach:2.9,arc:50,lunge:1.4,poise:25})],
+  heavy:M('Melee_1H_Attack_Jump_Chop',{spd:1.0,dmg:2.1,st:26,reach:2.6,arc:90,lunge:2.2,poise:70,chain:1.0,end:1.15}),run:M('Melee_1H_Attack_Slice_Horizontal',{spd:1.2,dmg:1.3,st:14,lunge:2.5,arc:120})},
+ greatsword:{stance:'Melee_2H_Idle',light:[M('Melee_2H_Attack_Slice',{spd:1.0,dmg:1.0,st:17,reach:2.8,arc:130,poise:35,chain:0.55,end:0.95}),M('Melee_2H_Attack_Chop',{spd:1.0,dmg:1.15,st:18,reach:2.8,arc:90,poise:40,chain:0.95,end:1.35}),M('Melee_2H_Attack_Stab',{spd:1.1,dmg:1.2,st:18,reach:3.4,arc:50,lunge:1.8,poise:40})],
+  heavy:M('Melee_2H_Attack_Spin',{spd:1.0,dmg:2.2,st:32,reach:3.0,arc:300,lunge:0.5,poise:90,a:0.75,b:1.3,chain:1.7,end:1.95}),run:M('Melee_2H_Attack_Slice',{spd:1.0,dmg:1.35,st:20,lunge:2.6,reach:2.8,arc:120})},
+ dagger:{stance:'Idle_A',light:[M('Melee_1H_Attack_Stab',{spd:1.9,dmg:0.8,st:7,reach:1.8,arc:70,lunge:0.8,poise:10}),M('Melee_Dualwield_Attack_Slice',{spd:1.6,dmg:0.8,st:7,reach:1.8,arc:100,poise:10}),M('Melee_1H_Attack_Slice_Diagonal',{spd:1.8,dmg:0.85,st:7,reach:1.8,poise:10}),M('Melee_Dualwield_Attack_Stab',{spd:1.6,dmg:1.1,st:9,reach:1.9,arc:60,lunge:1.2,poise:15})],
+  heavy:M('Melee_Dualwield_Attack_Chop',{spd:1.3,dmg:1.9,st:18,reach:2.0,arc:90,lunge:2.0,poise:40}),run:M('Melee_1H_Attack_Stab',{spd:1.7,dmg:1.0,st:9,lunge:3,reach:2,arc:60})},
+ axe:{stance:'Idle_A',light:[M('Melee_1H_Attack_Chop',{spd:1.2,dmg:1.1,st:14,reach:2.3,arc:90,poise:30,chain:0.75,end:0.95}),M('Melee_1H_Attack_Slice_Horizontal',{spd:1.1,dmg:1.1,st:14,arc:150,poise:30}),M('Melee_2H_Attack_Chop',{spd:1.1,dmg:1.4,st:17,reach:2.5,arc:90,poise:45,chain:0.95,end:1.3})],
+  heavy:M('Melee_2H_Attack_Chop',{spd:0.9,dmg:2.2,st:28,reach:2.7,arc:100,lunge:1.4,poise:80,chain:1.2,end:1.45}),run:M('Melee_1H_Attack_Chop',{spd:1.1,dmg:1.4,st:16,lunge:2.5})},
+ hammer:{stance:'Melee_2H_Idle',light:[M('Melee_2H_Attack_Chop',{spd:0.95,dmg:1.2,st:18,reach:2.7,arc:90,poise:55,chain:0.95,end:1.35}),M('Melee_2H_Attack_Slice',{spd:0.9,dmg:1.15,st:18,reach:2.8,arc:140,poise:55,chain:0.55,end:0.95})],
+  heavy:M('Melee_1H_Attack_Jump_Chop',{spd:0.85,dmg:2.6,st:34,reach:3.0,arc:120,lunge:1.5,poise:120,shock:true,chain:1.0,end:1.2}),run:M('Melee_2H_Attack_Slice',{spd:0.95,dmg:1.4,st:22,lunge:2.2})},
+ spear:{stance:'Melee_2H_Idle',light:[M('Melee_2H_Attack_Stab',{spd:1.35,dmg:0.95,st:11,reach:3.5,arc:40,lunge:1.0,poise:20}),M('Melee_2H_Attack_Stab',{spd:1.25,dmg:1.0,st:11,reach:3.5,arc:40,lunge:1.0,poise:20}),M('Melee_2H_Attack_Slice',{spd:1.05,dmg:1.1,st:15,reach:3.2,arc:120,poise:30})],
+  heavy:M('Melee_2H_Attack_Spin',{spd:1.1,dmg:1.8,st:26,reach:3.4,arc:300,lunge:0.5,poise:60,a:0.7,b:1.25,chain:1.5,end:1.8}),run:M('Melee_2H_Attack_Stab',{spd:1.2,dmg:1.3,st:14,lunge:3.4,reach:3.6,arc:40})},
+ staff:{stance:'Idle_A',cast:true,light:[M('Ranged_Magic_Shoot',{spd:1.4,dmg:0.8,st:6,fp:4,a:0.18,b:0.22,chain:0.3,end:0.55,cast:'bolt',reach:30,arc:20,lunge:0})],
+  heavy:M('Ranged_Magic_Shoot',{spd:0.8,dmg:2.0,st:14,fp:12,a:0.2,b:0.24,chain:0.7,end:0.9,cast:'orb',reach:30,arc:20,lunge:0,poise:60}),run:M('Melee_1H_Attack_Slice_Horizontal',{spd:1.2,dmg:0.8,st:10,lunge:2.2})},
+ fist:{stance:'Melee_Unarmed_Idle',light:[M('Melee_Unarmed_Attack_Punch_A',{spd:1.6,dmg:0.8,st:7,reach:1.7,arc:70,poise:10}),M('Melee_Unarmed_Attack_Punch_A',{spd:1.6,dmg:0.8,st:7,reach:1.7,arc:70,poise:10}),M('Melee_Unarmed_Attack_Kick',{spd:1.4,dmg:1.2,st:10,reach:2.0,arc:60,poise:30})],
+  heavy:M('Melee_Unarmed_Attack_Kick',{spd:1.0,dmg:2.0,st:20,reach:2.1,arc:70,poise:60,lunge:1.6}),run:M('Melee_Unarmed_Attack_Kick',{spd:1.4,dmg:1.2,st:12,lunge:2.5})},
+};

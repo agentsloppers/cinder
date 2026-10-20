@@ -1,0 +1,1094 @@
+{
+ "Melee_1H_Attack_Chop": {
+  "dur": 1.067,
+  "peak": 0.583,
+  "hitA": 0.55,
+  "hitB": 0.633,
+  "pkSpeed": 4.94,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_1H_Attack_Jump_Chop": {
+  "dur": 1.333,
+  "peak": 0.717,
+  "hitA": 0.65,
+  "hitB": 0.767,
+  "pkSpeed": 10.17,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_1H_Attack_Slice_Diagonal": {
+  "dur": 1,
+  "peak": 0.417,
+  "hitA": 0.367,
+  "hitB": 0.483,
+  "pkSpeed": 8.04,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_1H_Attack_Slice_Horizontal": {
+  "dur": 1.367,
+  "peak": 0.25,
+  "hitA": 0.217,
+  "hitB": 0.3,
+  "pkSpeed": 11.24,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_1H_Attack_Stab": {
+  "dur": 1.6,
+  "peak": 0.383,
+  "hitA": 0.35,
+  "hitB": 0.433,
+  "pkSpeed": 14.22,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_2H_Attack_Chop": {
+  "dur": 1.633,
+  "peak": 0.717,
+  "hitA": 0.65,
+  "hitB": 0.85,
+  "pkSpeed": 4.85,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_2H_Attack_Slice": {
+  "dur": 1.1,
+  "peak": 0.4,
+  "hitA": 0.35,
+  "hitB": 0.45,
+  "pkSpeed": 4.2,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_2H_Attack_Spin": {
+  "dur": 2.4,
+  "peak": 1.167,
+  "hitA": 0.633,
+  "hitB": 1.317,
+  "pkSpeed": 10.09,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_2H_Attack_Spinning": {
+  "dur": 0.667,
+  "peak": 0.233,
+  "hitA": 0,
+  "hitB": 0.667,
+  "pkSpeed": 6.34,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_2H_Attack_Stab": {
+  "dur": 1.6,
+  "peak": 0.383,
+  "hitA": 0.35,
+  "hitB": 0.433,
+  "pkSpeed": 8.27,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_2H_Idle": {
+  "dur": 1.067,
+  "peak": 0.8,
+  "hitA": 0.617,
+  "hitB": 1,
+  "pkSpeed": 0.15,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Block": {
+  "dur": 1.067,
+  "peak": 0.183,
+  "hitA": 0.067,
+  "hitB": 0.3,
+  "pkSpeed": 0.74,
+  "drift": [
+   0,
+   -0.02,
+   0.1
+  ]
+ },
+ "Melee_Block_Attack": {
+  "dur": 1.067,
+  "peak": 0.4,
+  "hitA": 0.3,
+  "hitB": 0.6,
+  "pkSpeed": 1.41,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Block_Hit": {
+  "dur": 1.067,
+  "peak": 0.233,
+  "hitA": 0.15,
+  "hitB": 0.3,
+  "pkSpeed": 0.68,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Blocking": {
+  "dur": 1.067,
+  "peak": 0.283,
+  "hitA": 0.083,
+  "hitB": 0.467,
+  "pkSpeed": 0.01,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Dualwield_Attack_Chop": {
+  "dur": 1.267,
+  "peak": 0.567,
+  "hitA": 0.483,
+  "hitB": 0.633,
+  "pkSpeed": 8.07,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Dualwield_Attack_Slice": {
+  "dur": 1.167,
+  "peak": 0.583,
+  "hitA": 0.517,
+  "hitB": 0.65,
+  "pkSpeed": 6.89,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Dualwield_Attack_Stab": {
+  "dur": 1.6,
+  "peak": 0.383,
+  "hitA": 0.35,
+  "hitB": 0.433,
+  "pkSpeed": 11.64,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Unarmed_Attack_Kick": {
+  "dur": 0.933,
+  "peak": 0.3,
+  "hitA": 0.15,
+  "hitB": 0.383,
+  "pkSpeed": 4.32,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Unarmed_Attack_Punch_A": {
+  "dur": 1.167,
+  "peak": 0.417,
+  "hitA": 0.367,
+  "hitB": 0.483,
+  "pkSpeed": 13.18,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Melee_Unarmed_Idle": {
+  "dur": 1.067,
+  "peak": 0.8,
+  "hitA": 0.617,
+  "hitB": 1,
+  "pkSpeed": 0.09,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Death_A": {
+  "dur": 0.8,
+  "peak": 0.4,
+  "hitA": 0.033,
+  "hitB": 0.517,
+  "pkSpeed": 5.12,
+  "drift": [
+   0,
+   -0.25,
+   -0.45
+  ]
+ },
+ "Death_A_Pose": {
+  "dur": 0,
+  "peak": 0,
+  "hitA": 0,
+  "hitB": 0,
+  "pkSpeed": 0,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Death_B": {
+  "dur": 2.633,
+  "peak": 1.533,
+  "hitA": 1.383,
+  "hitB": 1.683,
+  "pkSpeed": 3.07,
+  "drift": [
+   0.01,
+   -0.18,
+   0.23
+  ]
+ },
+ "Death_B_Pose": {
+  "dur": 0,
+  "peak": 0,
+  "hitA": 0,
+  "hitB": 0,
+  "pkSpeed": 0,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Hit_A": {
+  "dur": 0.667,
+  "peak": 0.05,
+  "hitA": 0,
+  "hitB": 0.1,
+  "pkSpeed": 2.15,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Hit_B": {
+  "dur": 0.867,
+  "peak": 0.05,
+  "hitA": 0,
+  "hitB": 0.133,
+  "pkSpeed": 2.94,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Idle_A": {
+  "dur": 1.067,
+  "peak": 0.8,
+  "hitA": 0.617,
+  "hitB": 1,
+  "pkSpeed": 0.02,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Idle_B": {
+  "dur": 2.133,
+  "peak": 1.367,
+  "hitA": 1.167,
+  "hitB": 1.533,
+  "pkSpeed": 0.14,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Interact": {
+  "dur": 1.3,
+  "peak": 0.167,
+  "hitA": 0.067,
+  "hitB": 0.317,
+  "pkSpeed": 2.67,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "PickUp": {
+  "dur": 1.3,
+  "peak": 0.167,
+  "hitA": 0.05,
+  "hitB": 0.333,
+  "pkSpeed": 2.14,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Spawn_Air": {
+  "dur": 1.3,
+  "peak": 0.8,
+  "hitA": 0.5,
+  "hitB": 0.833,
+  "pkSpeed": 9.58,
+  "drift": [
+   0,
+   -0.01,
+   0
+  ]
+ },
+ "Spawn_Ground": {
+  "dur": 1.3,
+  "peak": 0.8,
+  "hitA": 0.75,
+  "hitB": 0.833,
+  "pkSpeed": 9.58,
+  "drift": [
+   0,
+   -0.01,
+   0
+  ]
+ },
+ "Throw": {
+  "dur": 1.367,
+  "peak": 0.65,
+  "hitA": 0.583,
+  "hitB": 0.75,
+  "pkSpeed": 13.21,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Use_Item": {
+  "dur": 1.6,
+  "peak": 0.2,
+  "hitA": 0.067,
+  "hitB": 0.583,
+  "pkSpeed": 1.36,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Jump_Full_Long": {
+  "dur": 2.333,
+  "peak": 0.4,
+  "hitA": 0.317,
+  "hitB": 0.483,
+  "pkSpeed": 3.17,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Jump_Full_Short": {
+  "dur": 1.167,
+  "peak": 0.4,
+  "hitA": 0.317,
+  "hitB": 0.483,
+  "pkSpeed": 3.17,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Jump_Idle": {
+  "dur": 1.067,
+  "peak": 0.283,
+  "hitA": 0.083,
+  "hitB": 0.45,
+  "pkSpeed": 0.09,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Jump_Land": {
+  "dur": 0.667,
+  "peak": 0.233,
+  "hitA": 0.067,
+  "hitB": 0.317,
+  "pkSpeed": 2.5,
+  "drift": [
+   0,
+   -0.11,
+   0
+  ]
+ },
+ "Jump_Start": {
+  "dur": 0.6,
+  "peak": 0.4,
+  "hitA": 0.317,
+  "hitB": 0.483,
+  "pkSpeed": 3.17,
+  "drift": [
+   0,
+   0.11,
+   0
+  ]
+ },
+ "Running_A": {
+  "dur": 0.8,
+  "peak": 0.283,
+  "hitA": 0.117,
+  "hitB": 0.367,
+  "pkSpeed": 2.85,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Running_B": {
+  "dur": 0.8,
+  "peak": 0.2,
+  "hitA": 0.067,
+  "hitB": 0.35,
+  "pkSpeed": 4.3,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Walking_A": {
+  "dur": 1.067,
+  "peak": 0.3,
+  "hitA": 0.117,
+  "hitB": 0.467,
+  "pkSpeed": 1.58,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Walking_B": {
+  "dur": 1.067,
+  "peak": 0.917,
+  "hitA": 0.75,
+  "hitB": 1.033,
+  "pkSpeed": 1.37,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Walking_C": {
+  "dur": 1.6,
+  "peak": 0.333,
+  "hitA": 0.167,
+  "hitB": 0.667,
+  "pkSpeed": 0.35,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Crawling": {
+  "dur": 1.067,
+  "peak": 0.367,
+  "hitA": 0.117,
+  "hitB": 0.483,
+  "pkSpeed": 2.23,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Crouching": {
+  "dur": 1.067,
+  "peak": 0.667,
+  "hitA": 0.583,
+  "hitB": 0.767,
+  "pkSpeed": 0.45,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Dodge_Backward": {
+  "dur": 0.4,
+  "peak": 0.183,
+  "hitA": 0.017,
+  "hitB": 0.283,
+  "pkSpeed": 2.93,
+  "drift": [
+   0,
+   -0.01,
+   -0.17
+  ]
+ },
+ "Dodge_Forward": {
+  "dur": 0.4,
+  "peak": 0.067,
+  "hitA": 0.017,
+  "hitB": 0.117,
+  "pkSpeed": 6.42,
+  "drift": [
+   0,
+   0,
+   0.08
+  ]
+ },
+ "Dodge_Left": {
+  "dur": 0.4,
+  "peak": 0.117,
+  "hitA": 0.067,
+  "hitB": 0.317,
+  "pkSpeed": 2.51,
+  "drift": [
+   0.19,
+   -0.04,
+   0
+  ]
+ },
+ "Dodge_Right": {
+  "dur": 0.4,
+  "peak": 0.067,
+  "hitA": 0.017,
+  "hitB": 0.133,
+  "pkSpeed": 4,
+  "drift": [
+   -0.19,
+   -0.04,
+   0
+  ]
+ },
+ "Running_HoldingBow": {
+  "dur": 0.8,
+  "peak": 0.467,
+  "hitA": 0.383,
+  "hitB": 0.517,
+  "pkSpeed": 0.33,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Running_HoldingRifle": {
+  "dur": 0.8,
+  "peak": 0.183,
+  "hitA": 0.133,
+  "hitB": 0.233,
+  "pkSpeed": 1.46,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Running_Strafe_Left": {
+  "dur": 0.8,
+  "peak": 0.683,
+  "hitA": 0.483,
+  "hitB": 0.733,
+  "pkSpeed": 0.54,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Running_Strafe_Right": {
+  "dur": 0.8,
+  "peak": 0.283,
+  "hitA": 0.083,
+  "hitB": 0.333,
+  "pkSpeed": 0.54,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Sneaking": {
+  "dur": 2.133,
+  "peak": 1.45,
+  "hitA": 1.267,
+  "hitB": 1.55,
+  "pkSpeed": 1.61,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Walking_Backwards": {
+  "dur": 1.067,
+  "peak": 0.85,
+  "hitA": 0.633,
+  "hitB": 0.967,
+  "pkSpeed": 0.55,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "EXPERIMENTAL_Medium_Transform": {
+  "dur": 1,
+  "peak": 1,
+  "hitA": 0.967,
+  "hitB": 1,
+  "pkSpeed": 21.6,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Awaken_Floor": {
+  "dur": 2.3,
+  "peak": 1.25,
+  "hitA": 1.15,
+  "hitB": 1.45,
+  "pkSpeed": 5.53,
+  "drift": [
+   -0.01,
+   0.48,
+   0
+  ]
+ },
+ "Skeletons_Awaken_Floor_Long": {
+  "dur": 3.833,
+  "peak": 1.25,
+  "hitA": 1.183,
+  "hitB": 1.333,
+  "pkSpeed": 6.8,
+  "drift": [
+   -0.01,
+   0.48,
+   0.01
+  ]
+ },
+ "Skeletons_Awaken_Standing": {
+  "dur": 1,
+  "peak": 0.333,
+  "hitA": 0.267,
+  "hitB": 0.4,
+  "pkSpeed": 8.18,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Death": {
+  "dur": 2,
+  "peak": 2,
+  "hitA": 1.967,
+  "hitB": 2,
+  "pkSpeed": 42.15,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Death_Pose": {
+  "dur": 0,
+  "peak": 0,
+  "hitA": 0,
+  "hitB": 0,
+  "pkSpeed": 0,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Death_Resurrect": {
+  "dur": 2.7,
+  "peak": 1.283,
+  "hitA": 1.2,
+  "hitB": 1.367,
+  "pkSpeed": 8.29,
+  "drift": [
+   0,
+   0.25,
+   1.1
+  ]
+ },
+ "Skeletons_Idle": {
+  "dur": 4.267,
+  "peak": 1.233,
+  "hitA": 0.767,
+  "hitB": 1.517,
+  "pkSpeed": 0.29,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Inactive_Floor_Pose": {
+  "dur": 0,
+  "peak": 0,
+  "hitA": 0,
+  "hitB": 0,
+  "pkSpeed": 0,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Inactive_Standing_Pose": {
+  "dur": 0,
+  "peak": 0,
+  "hitA": 0,
+  "hitB": 0,
+  "pkSpeed": 0,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Spawn_Ground": {
+  "dur": 3.567,
+  "peak": 0.233,
+  "hitA": 0.083,
+  "hitB": 0.383,
+  "pkSpeed": 8.09,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Taunt": {
+  "dur": 1.033,
+  "peak": 0.65,
+  "hitA": 0.583,
+  "hitB": 0.75,
+  "pkSpeed": 6.06,
+  "drift": [
+   0,
+   -0.09,
+   -0.03
+  ]
+ },
+ "Skeletons_Taunt_Longer": {
+  "dur": 3,
+  "peak": 1.4,
+  "hitA": 1.35,
+  "hitB": 1.45,
+  "pkSpeed": 9.86,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Skeletons_Walking": {
+  "dur": 1.6,
+  "peak": 0.317,
+  "hitA": 0.2,
+  "hitB": 0.633,
+  "pkSpeed": 0.17,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_1H_Aiming": {
+  "dur": 1.067,
+  "peak": 0.183,
+  "hitA": 0.067,
+  "hitB": 0.317,
+  "pkSpeed": 3.01,
+  "drift": [
+   -0.02,
+   0.01,
+   0.06
+  ]
+ },
+ "Ranged_1H_Reload": {
+  "dur": 1.167,
+  "peak": 1.017,
+  "hitA": 0.9,
+  "hitB": 1.133,
+  "pkSpeed": 2.48,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_1H_Shoot": {
+  "dur": 1.067,
+  "peak": 0.133,
+  "hitA": 0.05,
+  "hitB": 0.233,
+  "pkSpeed": 4.03,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_1H_Shooting": {
+  "dur": 1.6,
+  "peak": 0.05,
+  "hitA": 0,
+  "hitB": 0.133,
+  "pkSpeed": 0.93,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_2H_Aiming": {
+  "dur": 1.6,
+  "peak": 0.167,
+  "hitA": 0.067,
+  "hitB": 0.233,
+  "pkSpeed": 1.94,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_2H_Reload": {
+  "dur": 1.6,
+  "peak": 0.733,
+  "hitA": 0.6,
+  "hitB": 0.85,
+  "pkSpeed": 0.97,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_2H_Shoot": {
+  "dur": 1.067,
+  "peak": 0.15,
+  "hitA": 0.067,
+  "hitB": 0.317,
+  "pkSpeed": 1.96,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_2H_Shooting": {
+  "dur": 1.067,
+  "peak": 0.833,
+  "hitA": 0.783,
+  "hitB": 0.9,
+  "pkSpeed": 1.65,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_Bow_Aiming_Idle": {
+  "dur": 1.833,
+  "peak": 1.4,
+  "hitA": 1.067,
+  "hitB": 1.717,
+  "pkSpeed": 0.09,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_Bow_Draw": {
+  "dur": 1.333,
+  "peak": 0.083,
+  "hitA": 0.017,
+  "hitB": 0.217,
+  "pkSpeed": 2.9,
+  "drift": [
+   0,
+   -0.03,
+   -0.07
+  ]
+ },
+ "Ranged_Bow_Draw_Up": {
+  "dur": 1.333,
+  "peak": 0.167,
+  "hitA": 0.067,
+  "hitB": 0.267,
+  "pkSpeed": 1.92,
+  "drift": [
+   0,
+   -0.04,
+   -0.07
+  ]
+ },
+ "Ranged_Bow_Idle": {
+  "dur": 1.567,
+  "peak": 0.4,
+  "hitA": 0.117,
+  "hitB": 0.667,
+  "pkSpeed": 0.01,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_Bow_Release": {
+  "dur": 1.333,
+  "peak": 0.05,
+  "hitA": 0,
+  "hitB": 0.083,
+  "pkSpeed": 4.71,
+  "drift": [
+   0,
+   0,
+   0.01
+  ]
+ },
+ "Ranged_Bow_Release_Up": {
+  "dur": 1.367,
+  "peak": 0.05,
+  "hitA": 0,
+  "hitB": 0.1,
+  "pkSpeed": 4.51,
+  "drift": [
+   0,
+   0.02,
+   0.01
+  ]
+ },
+ "Ranged_Magic_Raise": {
+  "dur": 2.1,
+  "peak": 0.267,
+  "hitA": 0.083,
+  "hitB": 0.5,
+  "pkSpeed": 2.51,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_Magic_Shoot": {
+  "dur": 0.933,
+  "peak": 0.1,
+  "hitA": 0.033,
+  "hitB": 0.233,
+  "pkSpeed": 3.63,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_Magic_Spellcasting": {
+  "dur": 0.667,
+  "peak": 0.583,
+  "hitA": 0.033,
+  "hitB": 0.667,
+  "pkSpeed": 0.98,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_Magic_Spellcasting_Long": {
+  "dur": 2.533,
+  "peak": 0.167,
+  "hitA": 0.05,
+  "hitB": 0.283,
+  "pkSpeed": 2.04,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "Ranged_Magic_Summon": {
+  "dur": 4.3,
+  "peak": 2.917,
+  "hitA": 2.817,
+  "hitB": 3.05,
+  "pkSpeed": 4.07,
+  "drift": [
+   0,
+   0,
+   0
+  ]
+ },
+ "__box": [
+  [
+   -0.739844840002811,
+   -0.0012270071372829094,
+   -0.4978520018846161
+  ],
+  [
+   0.7300595809160659,
+   2.236586470028023,
+   1.1532050513797074
+  ]
+ ]
+}
