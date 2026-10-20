@@ -7,6 +7,7 @@ import {WEAPONS,WEAPON_BY_ID,RARITY} from './data/weapons.js';
 import {STATS,STAT_NAMES,STAT_DESC,levelOf,cinderCost} from './data/stats.js';
 import {Audio} from './audio.js';
 import {Engine} from './engine.js';
+import {Minimap} from './minimap.js';
 const $=id=>document.getElementById(id);
 const h=(t,c,html)=>{const e=document.createElement(t); if(c)e.className=c; if(html!=null)e.innerHTML=html; return e};
 const STAR=r=>'★'.repeat(r||1);
@@ -17,13 +18,13 @@ export const UI={
  init(){
   this.root=$('ui'); this.hud=$('hud'); this.menu=$('menu'); this.msgT=0;
   this.el={hp:$('hpf'),hpg:$('hpg'),st:$('stf'),fp:$('fpf'),fl:$('flasks'),cin:$('cinders'),emb:$('embers'),prompt:$('prompt'),banner:$('banner'),boss:$('boss'),bossn:$('bossn'),bosst:$('bosst'),bossf:$('bossf'),lock:$('lock'),spirit:$('spirit'),toast:$('toast'),hurt:$('hurtfx'),eb:$('ebar'),ebf:$('ebf'),ebn:$('ebn'),wpn:$('wpn')};
-  this.hpShown=1;
+  this.hpShown=1; Minimap.init(this.hud);
  },
  hudShow(v){ this.hud.style.display=v?'block':'none' },
  toast(t,col){ const e=this.el.toast; e.textContent=t; e.style.color=col||'#e8d9b8'; e.classList.remove('on'); void e.offsetWidth; e.classList.add('on') },
  bannerShow(text,sub,cls=''){ const b=this.el.banner; b.className='banner '+cls; b.innerHTML=`<div class="bt">${text}</div>${sub?`<div class="bs">${sub}</div>`:''}`; void b.offsetWidth; b.classList.add('on') },
  prompt(t){ this.el.prompt.style.opacity=t?1:0; if(t)this.el.prompt.innerHTML=t },
- update(dt,P,cam){
+ update(dt,P,cam){ Minimap.update(dt,P,cam);
   const e=this.el; const hp=P.hp/P.maxHp; this.hpShown+=(hp-this.hpShown)*Math.min(1,dt*3);
   e.hp.style.width=Math.max(0,hp*100)+'%'; e.hpg.style.width=Math.max(0,this.hpShown*100)+'%'; $('hpbar').style.width=Math.min(520,P.maxHp*0.9)+'px';
   e.st.style.width=Math.max(0,P.st/P.maxSt*100)+'%'; $('stbar').style.width=Math.min(460,P.maxSt*2.6)+'px';
