@@ -30,7 +30,7 @@ const PlayerProto={
  get maxHp(){return maxHp(this.stats)}, get maxSt(){return maxSt(this.stats)}, get maxFp(){return maxFp(this.stats)},
  get weapon(){return WEAPON_BY_ID[this.weaponId]}, get moves(){return MOVESETS[this.weapon.cls]},
  async init(scene){
-  const kr=await buildKnight(); this.model=kr.model; this.ratio=kr.ratio; this.model.scale.set(1.24,1.12,1.24); this.model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.frustumCulled=false}});
+  const kr=await buildKnight(); this.model=kr.model; this.ratio=kr.ratio; this.model.scale.set(1.24,1.12,1.24); this.model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.frustumCulled=false; if(/shield|badge/i.test(o.name)&&o.material){o.material=o.material.clone(); if(o.material.color)o.material.color.setRGB(0.22,0.21,0.2); o.material.metalness=0.6; o.material.roughness=0.55;}}});
   this.root.add(this.model); scene.add(this.root); this.mixer=new THREE.AnimationMixer(this.model); this.actions={};
   this.model.traverse(o=>{ if((o.name==='handslot.r'||o.name==='handslotr'))this.handR=o; if((o.name==='handslot.l'||o.name==='handslotl'))this.handL=o; });
   await this.equip(this.weaponId); this.play('Idle_A',{fade:0}); this.syncPos();
@@ -49,7 +49,7 @@ const PlayerProto={
   if(w.cls==='fist'){ holder.visible=true }
   if(w.off==='dual'&&w.cls!=='fist'){ const m2=await mk(w.model); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2 }
   else if(w.off==='dual'){ const m2=await mk(w.model); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2 }
-  else if(w.off){ const m2=await mk(w.off); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2; m2.traverse(o=>{ if(o.isMesh&&o.material){ o.material=o.material.clone(); const c=o.material.color; if(c){ const l=(c.r+c.g+c.b)/3; c.setRGB(.16+l*.18,.155+l*.17,.15+l*.16) } o.material.metalness=.6; o.material.roughness=.55 } }); this.hasShield=true }
+  else if(w.off){ const m2=await mk(w.off); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2; m2.traverse(o=>{ if(o.isMesh&&o.material){ const om=o.material; const nm=new THREE.MeshStandardMaterial({color:0x34312e,metalness:0.65,roughness:0.5}); o.material=nm; } }) }
   this.hasShield=!!w.off&&w.off!=='dual';
   this.wR.userData.len=w.len;
   if(this.trail){ FX.trails.splice(FX.trails.indexOf(this.trail),1);FX.scene.remove(this.trail.mesh);this.trail=null }

@@ -8,7 +8,7 @@ import {angDiff} from './player.js';
 
 const lerp=(a,b,t)=>a+(b-a)*t;
 export const Cam={
- yaw:Math.PI,pitch:0.28,dist:5.4,tdist:5.4,fov:62,shakeAmt:0,shakeT:0,pos:new THREE.Vector3(),look:new THREE.Vector3(),tgt:new THREE.Vector3(),sens:1,invertY:false,cine:null,
+ yaw:Math.PI,pitch:0.34,dist:5.4,tdist:5.4,fov:62,shakeAmt:0,shakeT:0,pos:new THREE.Vector3(),look:new THREE.Vector3(),tgt:new THREE.Vector3(),sens:1,invertY:false,cine:null,
  init(p){ this.yaw=p.yaw; this.snap(p) },
  shake(a){ this.shakeAmt=Math.min(1,Math.max(this.shakeAmt,a)) },
  snap(p){ this.tgt.set(p.x,p.y+1.55,p.z); this.update(0.016,p,true) },
@@ -26,7 +26,7 @@ export const Cam={
   } else {
    const k=0.0024*this.sens; this.yaw-=(Input.lookX||0)*k; this.pitch+=(Input.lookY||0)*k*(this.invertY?-1:1); this.tdist=5.4+(p.sprinting?0.5:0)+(p.state==='attack'?0.2:0);
   }
-  this.pitch=Math.max(-0.5,Math.min(1.15,this.pitch));
+  this.pitch=Math.max(-0.12,Math.min(1.15,this.pitch));
   this.dist=lerp(this.dist,this.tdist,Math.min(1,dt*3));
   // follow target (smoothed vertical)
   const ty=p.y+1.55; this.tgt.x=snap?p.x:lerp(this.tgt.x,p.x,Math.min(1,dt*18)); this.tgt.z=snap?p.z:lerp(this.tgt.z,p.z,Math.min(1,dt*18)); this.tgt.y=snap?ty:lerp(this.tgt.y,ty,Math.min(1,dt*6));
@@ -36,9 +36,9 @@ export const Cam={
   const rx=Math.cos(this.yaw)*0.55,rz=-Math.sin(this.yaw)*0.55;
   const hx=this.tgt.x+rx,hz=this.tgt.z+rz,hy=this.tgt.y+0.1;
   // collision: march from head to camera
-  let dd=off; const steps=8; for(let i=1;i<=steps;i++){ const t=i/steps*off; const x=hx-sx*cp*t,z=hz-sz*cp*t,y=hy+sp*t; const gh=Terrain.h(x,z)+0.35; let hit=y<gh; if(!hit){ const q={x,z}; if(Colliders.resolve(q,0.25,y-0.3)&&(Math.abs(q.x-x)+Math.abs(q.z-z))>0.04)hit=true } if(hit){ dd=Math.max(1.2,t-0.45); break } }
+  let dd=off; const steps=8; for(let i=1;i<=steps;i++){ const t=i/steps*off; const x=hx-sx*cp*t,z=hz-sz*cp*t,y=hy+sp*t; const gh=Terrain.h(x,z)+0.9; let hit=y<gh; if(!hit){ const q={x,z}; if(Colliders.resolve(q,0.25,y-0.3)&&(Math.abs(q.x-x)+Math.abs(q.z-z))>0.04)hit=true } if(hit){ dd=Math.max(1.2,t-0.45); break } }
   this.cdist=snap||this.cdist===undefined?dd:(dd<this.cdist?dd:lerp(this.cdist,dd,Math.min(1,dt*3)));
-  let px=hx-sx*cp*this.cdist,pz=hz-sz*cp*this.cdist,py=hy+sp*this.cdist; const g=Terrain.h(px,pz)+0.4; if(py<g)py=g;
+  let px=hx-sx*cp*this.cdist,pz=hz-sz*cp*this.cdist,py=hy+sp*this.cdist; const g=Terrain.h(px,pz)+1.1; if(py<g)py=g;
   // shake
   if(this.shakeAmt>0.001){ const s=this.shakeAmt; px+=(Math.random()-.5)*s*0.5; py+=(Math.random()-.5)*s*0.5; pz+=(Math.random()-.5)*s*0.5; this.shakeAmt*=Math.pow(0.0008,dt) }
   cam.position.set(px,py,pz); this.pos.copy(cam.position);
