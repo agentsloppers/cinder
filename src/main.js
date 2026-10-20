@@ -72,6 +72,7 @@ async function begin(cont){
   applySave(); await P.equip(P.weaponId);
   const S=Save.d; if(S.flaskBonus){ P.maxFlasks=4+S.flaskBonus; P.flasks=P.maxFlasks } lastShrine=Level.shrines.find(s=>s.id===S.shrine)||Level.shrines[0];
   for(const [k,v] of Object.entries(S.flags||{}))G.flags[k]=v;
+  G.ng=S.ng||0; for(const e of World.enemies)e.setNG&&e.setNG(G.ng);
   for(const e of World.enemies){ if(e.boss&&G.flags[e.def.flag]){ e.hidden=true; e.alive=false; e.root.visible=false } }
   const sx=lastShrine.x, sz=lastShrine.z+(cont?4:0);
   if(cont) P.respawn(sx,sz,0); else { P.respawn(0,232,Math.PI); }
@@ -94,7 +95,7 @@ function restAt(s){
 function unstuck(why){ UI.close(); const s=lastShrine||Level.shrines[0]; P.respawn(s.x,s.z+4,0); P.vx=P.vz=0; Cam.snap(P); P.lock=null; saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.(); try{ UI.toast&&UI.toast('Returned to '+s.name) }catch(e){} Tele.send('unstuck',why) }
 function openHub(shrine,tab){
   G.mode='rest'; Input.wantLock=false;
-  UI.hub({P,shrine,shrines:Level.shrines,tab,onUnstuck:()=>{ unstuck('menu') },onClose:()=>{ UI.close(); saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.() },
+  UI.hub({P,shrine,shrines:Level.shrines,tab,onUnstuck:()=>{ unstuck('menu') },onJourney:()=>{ startJourney() },onClose:()=>{ UI.close(); saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.() },
     onWarp:s=>{ UI.close(); lastShrine=s; P.respawn(s.x,s.z+4,0); Cam.snap(P); for(const e of World.enemies){ if(!e.hidden)e.reset() } saveGame(); G.mode='play'; Input.wantLock=true; canvas.requestPointerLock?.() }});
 }
 
@@ -103,8 +104,19 @@ G.on('playerDied',()=>{ Spirits.reset(); P.ward=null;
   const amt=Math.floor(P.cinders); if(amt>0||G.stain){ G.stain={x:P.x,z:P.z,amt:amt+(0)}; if(amt===0&&S.stain)G.stain=S.stain; placeStain(G.stain) }
   Tele.send('death',[Math.round(P.x),Math.round(P.z),amt]); P.cinders=0; saveGame(); UI.diedScreen(true);
 });
-G.on('bossDown',e=>{ UI.bannerShow('ENEMY FELLED',e.name,'felled'); Audio.play('boss_down'); P.cinders+=e.def.cinders||2000; Save.d.embers+=e.def.embers||12; const gt=[]; for(const id of e.def.drops||[]){ const w=WEAPON_BY_ID[id]; if(w&&!Save.d.owned[id]){ Save.d.owned[id]=1; Save.d.refine[id]=0; gt.push(w.name) } } if(gt.length)setTimeout(()=>UI.bannerShow('SPOILS',gt.join(' · '),'felled'),3200); saveGame(); });
+G.on('bossDown',e=>{ UI.bannerShow('ENEMY FELLED',e.name,'felled'); Audio.play('boss_down'); P.cinders+=Math.round((e.def.cinders||2000)*(1+0.5*(G.ng||0))); Save.d.embers+=e.def.embers||12; const gt=[]; for(const id of e.def.drops||[]){ const w=WEAPON_BY_ID[id]; if(w&&!Save.d.owned[id]){ Save.d.owned[id]=1; Save.d.refine[id]=0; gt.push(w.name) } } if(gt.length)setTimeout(()=>UI.bannerShow('SPOILS',gt.join(' · '),'felled'),3200); saveGame(); });
 G.on('kill',e=>{ Save.d.kills=(Save.d.kills||0)+1 });
+G.on('bossDown',e=>{ if(e.type==='stilled_heart') setTimeout(()=>{ if(!P.dead) UI.journeyPrompt&&UI.journeyPrompt((G.ng||0)+1,startJourney) },7000) });
+// ---- New Game+: the next Journey. Keep level, weapons, spirits, embers; bosses, chests and enemies return stronger.
+function startJourney(){
+  const S=Save.d; S.ng=(S.ng||0)+1; G.ng=S.ng; Tele.send('ngplus',[S.ng]);
+  for(const k of Object.keys(G.flags))delete G.flags[k]; S.flags={}; S.chests={}; S.stain=null; G.stain=null; World.stain.visible=false;
+  for(const e of World.enemies){ e.setNG&&e.setNG(G.ng); e.reset&&e.reset() }
+  try{ for(const c of (World.chests||[])){ c.opened=false; c.reset&&c.reset() } }catch(x){}
+  lastShrine=Level.shrines.find(s=>s.id==='ember')||Level.shrines[0]; S.shrine=lastShrine.id;
+  UI.fade(1,600); setTimeout(()=>{ P.respawn(0,232,Math.PI); P.hp=P.maxHp; P.flasks=P.maxFlasks; saveGame(); UI.fade(0,1200); UI.bannerShow('JOURNEY '+(S.ng+1),'The oath is sworn again. The land has grown crueler.') },700);
+}
+
 
 function openChest(c){
   const S=Save.d; (S.chests||(S.chests={}))[c.id]=1; P.startInteract('Interact',1.0); const L=c.loot, got=[];

@@ -11,11 +11,12 @@ import {angDiff} from './player.js';
 const lerp=(a,b,t)=>a+(b-a)*t;
 
 export class Enemy{
+ setNG(n){ this.ng=n|0; const hm=1+0.6*this.ng, dm=1+0.35*this.ng; this.maxHp=Math.round(this.baseHp*hm); this.hp=this.maxHp; this.dmgMul=this.baseDm*dm; this.maxPoise=Math.round((this.def.poise||0)*(1+0.2*this.ng)); this.poise=this.maxPoise }
  constructor(type,x,z,o={}){
   this.type=type; this.boss=!!BOSS_TYPES[type]; this.def=BOSS_TYPES[type]||ENEMY_TYPES[type]; if(!this.def)throw new Error('unknown enemy '+type);
   const d=this.def; this.name=d.name; this.homeX=x;this.homeZ=z; this.x=x;this.z=z;this.y=Terrain.h(x,z); this.vx=0;this.vz=0; this.facing=o.facing??Math.random()*6.28;
   this.r=d.r;this.h=d.h;this.big=!!d.big||d.scale>1.3; this.maxHp=Math.round(d.hp*(o.hpMul||1)); this.hp=this.maxHp; this.maxPoise=d.poise; this.poise=d.poise;
-  this.dmgMul=(d.dm||1)*(o.dmgMul||1); this.alive=true; this.hidden=false; this.state=d.sleeper?'dormant':'idle'; this.tt=0; this.cd=0.5+Math.random(); this.att=null;
+  this.dmgMul=(d.dm||1)*(o.dmgMul||1); this.baseHp=this.maxHp; this.baseDm=this.dmgMul; this.ng=0; this.alive=true; this.hidden=false; this.state=d.sleeper?'dormant':'idle'; this.tt=0; this.cd=0.5+Math.random(); this.att=null;
   this.stunned=false;this.riposteable=false; this.stunT=0; this.glow=0; this.glowCol=[1,.5,.2]; this.hover=0; this.deadT=0; this.invuln=0; this.engaged=false;
   this.strafeDir=Math.random()<0.5?1:-1; this.strafeT=0; this.phase=0; this.lastAtk=''; this.flash=0; this.animSpd=1; this.stuckT=0; this.guardUp=false; this.aggroed=false;
   this.root=new THREE.Group(); this.mats=[]; this.id=o.id||(type+'_'+Math.round(x)+'_'+Math.round(z)); this.areaId=o.area||''; this.hitFlag=false; this.hitT=0; this.noticeT=0;

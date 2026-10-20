@@ -11,11 +11,11 @@ Projectiles.scene=THREE.Scene();
 Terrain.bake();
 const DT=1/30; let fails=0; const rows=[];
 const isNum=v=>typeof v==='number'&&isFinite(v);
-function duel(type,boss,style){
+function duel(type,boss,style,ng=0){
  G.enemies.length=0; G.flags=G.flags||{}; G.scene=G.scene||THREE.Scene();
  const d=boss?BOSS_TYPES[type]:ENEMY_TYPES[type]; const ax=d.arena?d.arena.x:0, az=d.arena?d.arena.z:200;
  let e; try{ e=new Enemy(type,ax,az,{boss}) }catch(err){ return {err:'ctor '+err.message} }
- e.mixer=THREE.AnimationMixer(); e.actions={}; e.root=THREE.Group(); e.model=THREE.Group(); G.enemies.push(e);
+ e.mixer=THREE.AnimationMixer(); e.actions={}; e.root=THREE.Group(); e.model=THREE.Group(); G.enemies.push(e); if(ng&&e.setNG)e.setNG(ng);
  if(e.state==='dormant'&&!d.sleeper)e.state='idle';
  const P={x:ax,z:az+8,y:Terrain.h(ax,az+8),r:0.45,vx:0,vz:0,dead:false,hp:900000,hitsTaken:0,dmgTaken:0,blocked:0,dodged:0,iframes:0,blocking:false,
   hurt(info){ if(this.iframes>0){this.dodged++;return {dodged:true}} if(this.blocking&&!info.unblockable){this.blocked++;return {blocked:true}} this.hitsTaken++; this.dmgTaken+=info.dmg||0; return {hit:true} }};
@@ -52,4 +52,5 @@ for(const [k,b] of types)for(const style of ['tank','dodge','block']){
  const bad=r.issues.length>0; if(bad)fails++;
  console.log(`${bad?'FAIL':'ok  '} ${(b?'BOSS ':'')+k} [${style}] ${r.t}s hitsTaken=${r.hits} dmg=${r.dmg} blocked=${r.blk} dodged=${r.ddg} firstHit=${r.firstHit}s ${r.issues.join('; ')}`);
 }
+for(const k of Object.keys(BOSS_TYPES)){ const r=duel(k,true,'block',2); if(r.err){fails++;console.log('FAIL NG+',k,r.err);continue} const bad=r.issues.length>0; if(bad)fails++; console.log(`${bad?'FAIL':'ok  '} NG+2 BOSS ${k} [block] ${r.t}s dmg=${r.dmg} ${r.issues.join('; ')}`) }
 console.log(fails?`combat sim: ${fails} FAIL`:'combat sim: all duels pass'); process.exit(fails?1:0);
