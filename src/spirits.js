@@ -5,6 +5,10 @@ import {Save} from './save.js';
 import {SPIRIT_BY_ID} from './data/gacha.js';
 import {FX,Floaters} from './fx.js';
 import {Audio} from './audio.js';
+import {Enemy} from './enemy.js';
+import {Engine} from './engine.js';
+import {Terrain} from './terrain.js';
+import {Colliders} from './colliders.js';
 
 const RANK=0.12;
 export const Spirits={
@@ -35,11 +39,13 @@ export const Spirits={
    case 'ward':{ p.ward={t:sp.dur||10,cut:Math.min(0.85,sp.power*(1+(m-1)*0.5))}; FX.ring(p.x,y+1,p.z,1.4,0x9fb0c8,sp.dur||10,0.1); break }
    case 'buff':{ p.buff={t:sp.dur||16,mul:1+sp.power*m}; break }
    case 'storm':{ const n=sp.strikes||4; for(let k=0;k<n;k++)this.active.push({kind:'bolt',t:0.35+k*0.45,power:sp.power*m,rad:sp.rad}); break }
+   case 'ally':{ this.summonAlly(p,sp,m); break }
    case 'time':{ FX.slowmo(sp.power,sp.dur||5); p.invuln=Math.max(p.invuln||0,(sp.dur||5)*sp.power+0.4); break }
   }
   G.emit('spiritCast',sp); return true;
  },
  update(dt,p){
+  this.updateAllies(dt,p);
   if(p.ward&&p.ward.t>0)p.ward.t-=dt;
   for(let i=this.active.length-1;i>=0;i--){ const a=this.active[i];
    if(a.kind==='heal'){ const h=a.left*Math.min(dt,a.t)/a.dur; p.hp=Math.min(p.maxHp,p.hp+h); a.t-=dt; if(Math.random()<0.3)FX.emit(1,{x:p.x,y:(p.y||0)+1,z:p.z,speed:0.6,up:1.5,col:[1,.85,.5],size:0.12,life:0.9,grav:-1}) }
@@ -49,5 +55,33 @@ export const Spirits={
    if(a.t<=0)this.active.splice(i,1);
   }
  },
- reset(){ this.active.length=0 },
+ allies:[],
+ async summonAlly(p,sp,m){
+  for(const a of this.allies)this.dismiss(a);
+  const a=new Enemy(sp.model||'reaver',p.x-Math.sin(p.yaw)*1.5,p.z-Math.cos(p.yaw)*1.5,{id:'ally_'+Date.now()});
+  try{ await a.init(Engine.scene) }catch(e){ console.warn('ally load',e); return }
+  const i=(G.enemies||[]).indexOf(a); if(i>=0)G.enemies.splice(i,1);
+  a.ally=true; a.life=sp.dur||40; a.dmg=sp.power*m; a.state='follow'; a.cd=0.6; a.hp=a.maxHp=9e9;
+  for(const mt of a.mats){ if(mt.emissive){ mt.emissive.setRGB(0.25,0.35,0.55); mt.transparent=true; mt.opacity=0.82 } }
+  if(a.aura){ a.aura.color&&a.aura.color.setRGB(0.6,0.75,1) }
+  FX.emit(30,{x:a.x,y:a.y+1,z:a.z,speed:2,up:3,col:[.6,.75,1],size:0.2,life:1,grav:-1});
+  this.allies.push(a);
+ },
+ dismiss(a){ FX.emit(20,{x:a.x,y:a.y+1,z:a.z,speed:2,up:3,col:[.6,.75,1],size:0.18,life:0.9,grav:-1}); a.root.parent&&a.root.parent.remove(a.root); a.gone=true },
+ updateAllies(dt,p){
+  for(let i=this.allies.length-1;i>=0;i--){ const a=this.allies[i];
+   a.life-=dt; if(a.life<=0||p.dead){ this.dismiss(a); this.allies.splice(i,1); continue }
+   a.mixer&&a.mixer.update(dt); a.cd-=dt;
+   let tgt=null,bd=22; for(const e of G.enemies||[]){ if(!e.alive||e.hidden||e.state==='dormant')continue; const d=Math.hypot(e.x-a.x,e.z-a.z); if(d<bd){bd=d;tgt=e} }
+   let gx,gz,stop; if(tgt){ gx=tgt.x;gz=tgt.z;stop=1.3+(tgt.r||0.5) } else { gx=p.x-Math.sin(p.yaw)*2;gz=p.z-Math.cos(p.yaw)*2;stop=1.2 }
+   const dx=gx-a.x,dz=gz-a.z,d=Math.hypot(dx,dz);
+   if(a.swing>0){ a.swing-=dt; if(!a.struck&&a.swing<0.55&&tgt&&bd<stop+1){ a.struck=true; this.strike(a,tgt,a.dmg,50); Audio.play('hit',{}) } }
+   else if(tgt&&d<stop+0.3&&a.cd<=0){ a.swing=1.0; a.struck=false; a.cd=1.5; a.facing=Math.atan2(dx,dz); a.play('1H_Melee_Attack_Chop',{once:true,restart:true,fade:0.1})||a.play('2H_Melee_Attack_Chop',{once:true,restart:true,fade:0.1}) }
+   else if(d>stop){ const sp=Math.min(d>8?6:3.4,d*3); a.x+=dx/d*sp*dt; a.z+=dz/d*sp*dt; a.facing=Math.atan2(dx,dz); a.play(d>8?'Running_A':a.def.run,{fade:0.2}); }
+   else a.play(a.def.idle,{fade:0.25});
+   if(d>40){ a.x=p.x;a.z=p.z }
+   const q={x:a.x,z:a.z}; try{Colliders.resolve(q,a.r,a.y)}catch(_){} a.x=q.x;a.z=q.z; a.y=Terrain.h(a.x,a.z); a.sync();
+  }
+ },
+ reset(){ this.active.length=0; for(const a of this.allies)this.dismiss(a); this.allies.length=0 },
 };

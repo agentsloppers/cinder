@@ -20,6 +20,8 @@ export const SPIRITS=[
  {id:'ashen_bulwark',name:'Ashen Bulwark',r:4,fp:30,cd:24,icon:'🛡',kind:'ward',power:0.6,dur:9,desc:'Ashen plate rises around you. Damage taken is cut by sixty percent.',lore:'Armour with nobody in it, still keeping its oath.'},
  {id:'court_of_hollows',name:'Court of Hollows',r:5,fp:46,cd:36,icon:'♛',kind:'storm',power:260,rad:18,strikes:5,desc:'The Hollow Court convenes. Five judgements fall on everything near you.',lore:'There is no throne. There is only the sentence.'},
  {id:'first_flame',name:'The First Flame',r:5,fp:42,cd:32,icon:'🔥',kind:'burst',power:420,rad:14,poise:500,desc:'The fire from before the Heart. A colossal blast that staggers everything.',lore:'Cinder remembers being it. Cinder would rather not.'},
+ {id:'barrow_squire',name:'Barrow Squire',r:4,fp:28,cd:45,icon:'⚔',kind:'ally',model:'reaver',power:38,dur:40,desc:'A sworn dead man-at-arms walks beside you for forty seconds, hewing at whatever you fight.',lore:'He swore to guard his lord past death. His lord rotted; the oath did not.'},
+ {id:'oathbound_shade',name:'Oathbound Shade',r:5,fp:40,cd:60,icon:'🗡',kind:'ally',model:'shade',power:70,dur:50,desc:'A twin-bladed shade fights at your side for fifty seconds. Duplicates sharpen its blades.',lore:'The Hollow Court sentenced her to serve. She chose whom.'},
 ];
 export const SPIRIT_BY_ID=Object.fromEntries(SPIRITS.map(s=>[s.id,s]));
 const wpn=r=>WEAPONS.filter(w=>w.r===r).map(w=>({type:'weapon',id:w.id,r}));
