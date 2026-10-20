@@ -24,10 +24,10 @@ export const Engine={
   const r=this.renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
   r.debug.checkShaderErrors=true; r.debug.onShaderError=(gl,prog,vs,fs)=>{ const log=(gl.getShaderInfoLog(fs)||'')+(gl.getShaderInfoLog(vs)||''); console.warn('CINDER shader fail',log.slice(0,400));
    try{ fetch('/api/tele',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({ev:[{t:Date.now(),type:'shaderfail',d:log.slice(0,600)}]})}) }catch(_){}
-   if(!localStorage.getItem('cinder_safe_shaders')){ localStorage.setItem('cinder_safe_shaders','1'); setTimeout(()=>location.reload(),300) } };
+   if(!localStorage.getItem('cinder_safe_shaders')){ localStorage.setItem('cinder_safe_shaders','1'); setTimeout(()=>{ try{ (r._safeScene||window.__cinder?.G?.scene)?.traverse(o=>{ const ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[]; for(const m of ms){ if(m.onBeforeCompile&&m.onBeforeCompile.toString().length>40){ m.onBeforeCompile=()=>{}; m.customProgramCacheKey=()=>'safe'; m.needsUpdate=true } } }) }catch(e){} },0) } };
   r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap; r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=0.92; r.outputColorSpace=THREE.SRGBColorSpace;
   this.scene=new THREE.Scene(); this.camera=new THREE.PerspectiveCamera(62,1,0.1,900);
-  this.scene.fog=new THREE.FogExp2(0x2a2a38,0.0085); this.scene.background=new THREE.Color(0x2a2a38);
+  this.scene.fog=new THREE.FogExp2(0x2e2a2c,0.014); this.scene.background=new THREE.Color(0x2a2a38);
   // lighting: low dusk sun + cool sky fill
   this.hemi=new THREE.HemisphereLight(0x8fa3d6,0x3a2f28,0.9); this.scene.add(this.hemi);
   this.sun=new THREE.DirectionalLight(0xffb27a,3.1); this.sun.position.set(-60,45,-30); this.sun.castShadow=true; const sh=this.sun.shadow;

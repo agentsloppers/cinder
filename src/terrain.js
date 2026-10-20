@@ -98,11 +98,11 @@ export const Terrain={
     vec3 rx=texture2D(rockD,vWP.zy/9.).rgb, rz=texture2D(rockD,vWP.xy/9.).rgb, ry=texture2D(rockD,vWP.xz/9.).rgb;
     vec3 rcol=rx*bw.x+rz*bw.z+ry*bw.y;
     float slope=1.-wn.y; float rk=smoothstep(.28,.5,slope);
-    float lum=dot(vColor,vec3(.299,.587,.114));
-    float pathy=smoothstep(.0,.12,vColor.r-vColor.g); // reddish-brown vertex tint marks paths/dirt
+    vec3 vc=vColor.rgb; float lum=dot(vc,vec3(.299,.587,.114));
+    float pathy=smoothstep(.0,.12,vc.r-vc.g); // reddish-brown vertex tint marks paths/dirt
     vec3 base=mix(gcol,mcol,clamp(pathy*1.5,0.,1.));
     base=mix(base,rcol,rk);
-    vec3 tint=mix(vec3(1.),vColor/max(lum,.05),.35); // keep regional hue, gently
+    vec3 tint=mix(vec3(1.),vc/max(lum,.05),.35); // keep regional hue, gently
     diffuseColor.rgb*=base*tint*(.55+lum*1.4);
    `).replace('#include <color_fragment>','');
   }; return mat },

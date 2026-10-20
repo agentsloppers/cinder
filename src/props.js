@@ -8,7 +8,7 @@ export const Props={group:new THREE.Group(),list:[],timeU:{value:0},cells:[],tmp
  swayMat(src,k,rock){ const key=src.uuid+k+(rock?'r':''); if(this.mats[key])return this.mats[key]; const m=src.clone(); if(m.map)m.map.colorSpace=THREE.SRGBColorSpace; m.roughness=0.95; m.metalness=0;
   const SAFE=(typeof localStorage!=='undefined'&&localStorage.getItem('cinder_safe_shaders'));
   if(!SAFE) m.onBeforeCompile=sh=>{ sh.uniforms.uTime=this.timeU;
-   sh.fragmentShader=sh.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\n float lumA=dot(diffuseColor.rgb,vec3(.3,.59,.11)); diffuseColor.rgb=mix(vec3(lumA),diffuseColor.rgb,.42)*vec3(.66,.63,.6);');
+   sh.fragmentShader=sh.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\n float lumA=dot(diffuseColor.rgb,vec3(.3,.59,.11)); diffuseColor.rgb=mix(vec3(lumA),diffuseColor.rgb,.22)*vec3(.6,.58,.54);');
    if(k>0) sh.vertexShader='uniform float uTime;\n'+sh.vertexShader.replace('#include <begin_vertex>',`vec3 transformed=vec3(position);
    #ifdef USE_INSTANCING
    float sw=max(position.y,0.)*${(0.05*k).toFixed(3)}; transformed.x+=sin(uTime*1.3+instanceMatrix[3].x*.3+instanceMatrix[3].z*.2+position.y)*sw; transformed.z+=cos(uTime*1.1+instanceMatrix[3].z*.3+position.y)*sw*.7;

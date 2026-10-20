@@ -49,7 +49,7 @@ const PlayerProto={
   if(w.cls==='fist'){ holder.visible=true }
   if(w.off==='dual'&&w.cls!=='fist'){ const m2=await mk(w.model); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2 }
   else if(w.off==='dual'){ const m2=await mk(w.model); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2 }
-  else if(w.off){ const m2=await mk(w.off); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2; this.hasShield=true }
+  else if(w.off){ const m2=await mk(w.off); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2; m2.traverse(o=>{ if(o.isMesh&&o.material){ o.material=o.material.clone(); const c=o.material.color; if(c){ const l=(c.r+c.g+c.b)/3; c.setRGB(.16+l*.18,.155+l*.17,.15+l*.16) } o.material.metalness=.6; o.material.roughness=.55 } }); this.hasShield=true }
   this.hasShield=!!w.off&&w.off!=='dual';
   this.wR.userData.len=w.len;
   if(this.trail){ FX.trails.splice(FX.trails.indexOf(this.trail),1);FX.scene.remove(this.trail.mesh);this.trail=null }
