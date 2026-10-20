@@ -19,7 +19,7 @@ import {World} from './world.js';
 import {UI} from './ui.js';
 import {Tele} from './telemetry.js';
 import {Spirits} from './spirits.js';
-import {HALF} from './terrain.js';
+import {HALF,LIMIT} from './terrain.js';
 
 const $=id=>document.getElementById(id);
 const canvas=$('c');
@@ -144,7 +144,8 @@ function loop(now){
     if(G.mode!=='rest'){
       Cam.update(sdt||0.0001,P);
       P.update(sdt,Cam.yaw); Spirits.update(sdt,P);
-      if(G.mode==='play'&&(!isFinite(P.x+P.y+P.z)||Math.abs(P.x)>HALF-2||Math.abs(P.z)>HALF-2||P.y<-5||P.y<Terrain.h(P.x,P.z)-30)) unstuck('oob');
+      if(isFinite(P.x+P.z)){ if(P.x>LIMIT)P.x=LIMIT; else if(P.x<-LIMIT)P.x=-LIMIT; if(P.z>LIMIT)P.z=LIMIT; else if(P.z<-LIMIT)P.z=-LIMIT }
+      if(G.mode==="play"&&(!isFinite(P.x+P.y+P.z)||Math.abs(P.x)>HALF-2||Math.abs(P.z)>HALF-2||P.y<-5||P.y<Terrain.h(P.x,P.z)-30)) unstuck('oob');
       if(G.mode==='play') Tele.sample(P,sdt);
       for(const e of G.enemies) e.update(sdt,P);
       Projectiles.update(sdt);

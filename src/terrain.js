@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import {fbm,perlin,clamp,lerp,smooth,mulberry} from './noise.js';
 
-export const SIZE=640, HALF=SIZE/2, CELL=1, N=SIZE/CELL+1, CH=64;
+export const SIZE=640, HALF=SIZE/2, LIMIT=HALF-10, CELL=1, N=SIZE/CELL+1, CH=64;
 
 // Designed locations. h:null keeps natural height at the centre. r=flat core, b=blend distance
 export const FLATS=[

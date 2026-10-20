@@ -1,16 +1,19 @@
 {
-  "name": "cinder",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "esbuild": "^0.28.2",
-    "three": "^0.186.1"
-  }
+ "name": "cinder",
+ "version": "1.0.0",
+ "description": "",
+ "main": "index.js",
+ "scripts": {
+  "reach": "esbuild tools/reach.js --bundle --platform=node --format=esm --outfile=tools/.reach.mjs --log-level=error --external:three && node tools/.reach.mjs",
+  "heat": "node tools/heat.js",
+  "sim": "esbuild tools/bots.js --bundle --platform=node --format=esm --outfile=tools/.bots.mjs --log-level=error --external:three && node tools/.bots.mjs",
+  "test": "npm run reach && npm run sim"
+ },
+ "keywords": [],
+ "author": "",
+ "license": "ISC",
+ "dependencies": {
+  "esbuild": "^0.28.2",
+  "three": "^0.186.1"
+ }
 }
