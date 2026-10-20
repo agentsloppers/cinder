@@ -14,3 +14,8 @@
 ## Status 2026-10-20 (CINDER v0.3)
 Done: combat core, 12 enemy types, 3 bosses (Corvane, Gorrad, Vael) with arenas, 5 shrines, ~24 weapons (7 movesets), 10 spirits, 2 banners with pity, levelling, bloodstain-style cinder recovery, credits screen, devlog, bug form.
 Next: 30+ weapons, caves/interiors (Barrow Deeps catacomb), companions banner (3rd), 20 spirits, NPC lore vendor, cliffs/hidden paths, gamepad polish, minimap, performance pass.
+
+## v0.4 — Ossuary Vaults (done)
+- New dungeon under the western barrow, boss #4 Orsolt the Ossuary Chancellor, 2 new weapons, 6 new nave enemies.
+## Next
+- Companions (summoned allies), full-screen map (M), 4th banner, more bosses, NG+.

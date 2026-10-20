@@ -20,6 +20,8 @@ const GROUPS=[
  // chapel courtyard (beyond the boss gate -> only reachable after)
  // Barrow
  ['knight',2,-190,-12,12],['bulwark',1,-180,-34,8],['caller',2,-200,-44,12],['brute',1,-170,-40,8],['assassin',2,-205,-20,12],
+ // Ossuary Vaults (nave)
+ ['husk',3,-143,-104,3],['reaver',2,-135,-96,3],['caller',2,-129,-103,2],['knight',1,-131,-98,2],['bulwark',1,-141,-97,2],['assassin',1,-127,-96,2],
  // road to summit
  ['knight',1,58,-38,10],['shade',3,40,-70,16],['brute',2,26,-104,14],['cultist',3,12,-140,16],['bulwark',1,4,-160,8],['assassin',2,-6,-166,10],
 ];
@@ -29,7 +31,7 @@ export const World={
  async spawnAll(scene,onProg){
   const R=mulberry(2024); const jobs=[];
   for(const [type,n,cx,cz,rad] of GROUPS){ for(let i=0;i<n;i++){ let x,z,tries=0; do{ const a=R()*6.28,d=Math.sqrt(R())*rad; x=cx+Math.cos(a)*d; z=cz+Math.sin(a)*d; tries++ }while(tries<20&&(Terrain.slope(x,z)>0.55||Level.nearFlat(x,z,4)&&type!=='bulwark'&&false)); if(Level.shrines.some(s=>Math.hypot(s.x-x,s.z-z)<12))continue; jobs.push(new Enemy(type,x,z,{area:(areaAt(x,z)||{}).id||''})) } }
-  jobs.push(new Enemy('ashen_knight',96,-4,{})); jobs.push(new Enemy('hollow_king',-196,-60,{})); jobs.push(new Enemy('stilled_heart',0,-232,{}));
+  jobs.push(new Enemy('ashen_knight',96,-4,{})); jobs.push(new Enemy('hollow_king',-196,-60,{})); jobs.push(new Enemy('stilled_heart',0,-232,{})); jobs.push(new Enemy('ossuary_chancellor',-104,-100,{}));
   let n=0; for(let i=0;i<jobs.length;i+=6){ await Promise.all(jobs.slice(i,i+6).map(async e=>{ await e.init(scene); if(e.boss)G.bosses=(G.bosses||[]).concat(e); n++ })); onProg&&onProg(n,jobs.length) }
   this.enemies=jobs; return jobs; },
  setupGates(scene){

@@ -89,7 +89,7 @@ G.on('playerDied',()=>{
   const amt=Math.floor(P.cinders); if(amt>0||G.stain){ G.stain={x:P.x,z:P.z,amt:amt+(0)}; if(amt===0&&S.stain)G.stain=S.stain; placeStain(G.stain) }
   P.cinders=0; saveGame(); UI.diedScreen(true);
 });
-G.on('bossDown',e=>{ UI.bannerShow('ENEMY FELLED',e.name,'felled'); Audio.play('boss_down'); P.cinders+=e.def.cinders||2000; Save.d.embers+=e.def.embers||12; saveGame(); });
+G.on('bossDown',e=>{ UI.bannerShow('ENEMY FELLED',e.name,'felled'); Audio.play('boss_down'); P.cinders+=e.def.cinders||2000; Save.d.embers+=e.def.embers||12; const gt=[]; for(const id of e.def.drops||[]){ const w=WEAPON_BY_ID[id]; if(w&&!Save.d.owned[id]){ Save.d.owned[id]=1; Save.d.refine[id]=0; gt.push(w.name) } } if(gt.length)setTimeout(()=>UI.bannerShow('SPOILS',gt.join(' · '),'felled'),3200); saveGame(); });
 G.on('kill',e=>{ Save.d.kills=(Save.d.kills||0)+1 });
 
 function openChest(c){

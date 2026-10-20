@@ -37,6 +37,8 @@ export const WEAPONS=[
  W('widows_kiss','Widow\'s Kiss','dagger','adv/dagger',4,30,{str:.2,dex:.9},'Gifted to brides of the Hollow Court. The giver rarely lived to see the wedding.',{len:0.9}),
  W('vigil_standard','Vigil Standard','spear','wb/spear_A',3,29,{str:.6,dex:.4},'A banner pole with a spearhead where the cloth was. The cloth burned first.',{len:2.4}),
  W('gloam_bow_staff','Gloamlight Rod','staff','wb/staff_A',4,34,{res:.9,dex:.2},'A rod that drinks the last light of dusk and spits it back.',{len:1.6}),
+ W('ledger_cleaver','Ledger-Cleaver','axe','skel/Skeleton_Axe',5,62,{str:.9,dex:.3},'The Chancellor struck every name from the Ledger with this. The names remain on the blade, one per notch.',{len:1.7,spd:0.93,fx:'ember'}),
+ W('chancellors_seal','Chancellor\'s Seal','staff','wb/staff_A',5,40,{res:1.0,dex:.2},'A seal pressed in grave wax. Whatever it is pressed to is owed to the vaults.',{len:1.6}),
  W('gallows_maul','Gallows Maul','hammer','wb/hammer_A',4,48,{str:.9,dex:.1},'Built from the beam of the Rootgate gallows. It knows how to drop things.',{len:1.7,off:null}),
  W('sunder_blade','Sunderblade','greatsword','adv/sword_2handed',4,52,{str:.8,dex:.3},'Two edges, neither kind. Used to open the Stilled Heart\'s outer doors.',{len:2.2,spd:0.93}),
  W('heart_eater','Heart-eater','fist','wb/fistweapon_B',5,58,{str:.6,dex:.8},'Gauntlets of the Hollow Court\'s executioner. They are warm. They should not be.',{len:0.8}),

@@ -87,6 +87,22 @@ export const BOSS_TYPES={
     A('quake','Melee_1H_Attack_Jump_Chop',{spd:0.75,dmg:105,range:[6,18],w:2.2,kind:'leap',slam:{r:6.5,ox:0,fx:true,ring:true},heavy:true,a:0.65,b:0.767,end:1.6,chain:'spin',cp:0.5}),
     A('spin','Melee_2H_Attack_Spin',{spd:0.8,dmg:100,reach:5.5,arc:360,range:[0,6],w:2,unb:true,kind:'spin',hitEvery:9,a:0.9,b:1.3,end:2.0}),
     A('frostfall','Ranged_Magic_Spellcasting_Long',{spd:0.95,a:1.0,b:1.1,end:2.2,range:[5,24],w:2.2,kind:'pillars',pillars:{n:6,r:2.4,delay:1.05,dmg:76,spread:4,onPlayer:true},track:0.4})]}]},
+ ossuary_chancellor:{name:'Orsolt, the Ossuary Chancellor',title:'Keeper of the Ledger of Bones',model:'chars/Skeleton_Warrior',wpn:'skel/Skeleton_Axe',off:null,hp:2100,speed:3.6,run:'Skeletons_Walking',idle:'Skeletons_Idle',r:1.1,h:3.8,scale:2.2,wscale:1.3,poise:340,cinders:4200,tint:[0.8,0.85,1.0],arena:{x:-104,z:-100,r:16},glow:[.4,.7,1],big:true,dm:1.8,drops:['ledger_cleaver','chancellors_seal'],flag:'ossuary_chancellor',
+  phases:[
+   {at:1,cd:[0.6,1.3],atk:[
+     A('chop','Melee_2H_Attack_Chop',{spd:0.8,dmg:82,reach:4.2,arc:90,lunge:2.4,range:[0,5],w:2.5,heavy:true,poise:100,turn:2.8,slam:{r:2.4,ox:3.2,fx:true}}),
+     A('sweep','Melee_2H_Attack_Slice',{spd:0.95,dmg:58,reach:4.4,arc:160,lunge:1.8,range:[0,5],w:3,chain:'chop',cp:0.35,turn:3.2}),
+     A('whirl','Melee_2H_Attack_Spin',{spd:0.95,dmg:40,reach:4.4,arc:360,range:[0,4.8],w:1.4,kind:'spin',hitEvery:0.4,a:0.7,b:1.32,end:1.9,poise:90}),
+     A('bonehail','Ranged_Magic_Spellcasting_Long',{spd:0.9,a:1.0,b:1.1,end:2.2,range:[5,22],w:3,kind:'pillars',pillars:{n:6,r:2.0,delay:1.0,dmg:64,spread:5,onPlayer:true}}),
+     A('ledger','Ranged_Magic_Raise',{spd:0.9,a:0.8,b:0.9,end:1.6,range:[5,24],w:2,kind:'shoot',proj:P({speed:12,dmg:44,r:0.45,life:3,col:[.5,.75,1],magic:true,homing:0.7,n:3,spread:0.45,kind:'orb'})})]},
+   {at:0.55,enter:'Ranged_Magic_Summon',cd:[0.4,1.0],speedMul:1.15,atk:[
+     A('chop','Melee_2H_Attack_Chop',{spd:0.88,dmg:88,reach:4.4,arc:90,lunge:2.6,range:[0,5.2],w:2.2,heavy:true,poise:100,turn:3,slam:{r:2.8,ox:3.2,fx:true},wave:P({kind:'wave',speed:13,dmg:60,r:1.2,life:1.3,col:[.5,.75,1],y:0.5})}),
+     A('sweep','Melee_2H_Attack_Slice',{spd:1.05,dmg:62,reach:4.6,arc:160,lunge:2,range:[0,5.2],w:3,chain:'chop',cp:0.5,turn:3.4}),
+     A('whirl','Melee_2H_Attack_Spin',{spd:1.05,dmg:44,reach:4.6,arc:360,range:[0,5],w:1.3,kind:'spin',hitEvery:0.35,a:0.7,b:1.32,end:1.9,poise:90}),
+     A('leap','Melee_1H_Attack_Jump_Chop',{spd:0.75,dmg:96,range:[6,16],w:2,kind:'leap',slam:{r:5,ox:0,fx:true},heavy:true,a:0.65,b:0.767,end:1.55,poise:100}),
+     A('bonehail','Ranged_Magic_Spellcasting_Long',{spd:1.0,a:1.0,b:1.1,end:2.0,range:[4,22],w:3,kind:'pillars',pillars:{n:9,r:2.0,delay:0.9,dmg:68,spread:6,onPlayer:true}}),
+     A('ledger','Ranged_Magic_Raise',{spd:1.0,a:0.8,b:0.9,end:1.5,range:[5,24],w:2,kind:'shoot',proj:P({speed:13,dmg:46,r:0.45,life:3,col:[.5,.75,1],magic:true,homing:1.0,n:5,spread:0.75,kind:'orb'})}),
+     A('reckoning','Ranged_Magic_Summon',{spd:0.8,a:2.8,b:3.0,end:4.0,range:[0,30],w:1.3,kind:'slam',unb:true,dmg:120,slam:{r:8,ox:0,fx:true,ring:true},poise:200,track:0.2})]}]},
  stilled_heart:{name:'Vael, Mother of the Stilled Heart',title:'The Queen Who Stopped the World',model:'chars/Mage',wpn:'adv/staff',off:null,hp:2600,speed:3.2,run:'Running_A',idle:'Idle_A',r:0.95,h:3.2,scale:1.9,poise:300,cinders:9000,tint:[0.85,0.75,1.0],arena:{x:0,z:-232,r:22},glow:[.8,.4,1],big:true,dm:2.3,flag:'stilled_heart',
   phases:[{at:1,cd:[0.7,1.4],atk:[
     A('orbs','Ranged_Magic_Raise',{spd:0.9,a:0.8,b:0.9,end:1.6,range:[3,24],w:3,kind:'shoot',proj:P({speed:12,dmg:60,r:0.55,life:3.5,col:[.7,.4,1],magic:true,homing:1.0,n:3,spread:0.4,kind:'orb'})}),

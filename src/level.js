@@ -1,4 +1,5 @@
 // Procedural + hand-placed content for the world: forests, rocks, grass, ruins, shrines.
+import {buildCrypt} from './level_crypt.js';
 import {Terrain,FLATS,pathD,HALF,SIZE} from './terrain.js';
 import {Props} from './props.js';
 import {mulberry,fbm,smooth,clamp} from './noise.js';
@@ -37,6 +38,7 @@ export const Level={ shrines:[], gates:[], torches:[], chests:[], spawns:[], dec
     if(i%3===0){ this.P('torch_lit',x*0.96+cx*0.04,h+1.6,z*0.96+cz*0.04,0,2.4,{cast:false}); this.torches.push({x:x,y:h+3,z:z,c:tc}) } } };
   ring(-196,-60,24,22,Math.PI/2,'pillar_decorated',0xff6a2a);
   ring(0,-232,28,26,Math.PI/2,'pillar',0xa070ff);
+  buildCrypt(this,R);
   this.treasure(R);
  },
  treasure(R){ // hidden chests, each in a little ruin on the flattest ground nearby

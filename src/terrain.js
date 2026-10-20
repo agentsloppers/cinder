@@ -12,11 +12,17 @@ export const FLATS=[
  {id:'chapelEntry',x:70,z:70,r:10,b:14,h:null},
  {id:'barrowMouth',x:-196,z:-28,r:16,b:20,h:null},
  {id:'summitFoot',x:0,z:-176,r:20,b:24,h:null},
+ {id:'ossVest',x:-164,z:-100,r:15,b:14,h:48},
+ {id:'ossC1',x:-152,z:-100,r:7,b:6,h:48},
+ {id:'ossNave',x:-137,z:-100,r:17,b:10,h:48},
+ {id:'ossC2',x:-122,z:-100,r:7,b:6,h:48},
+ {id:'ossSanct',x:-104,z:-100,r:23,b:16,h:48},
 ];
 // walking roads (polylines): carved slightly and painted
 export const PATHS=[
  [[0,232],[2,200],[-12,170],[-30,140],[-34,118],[-20,90],[10,76],[44,74],[70,70],[84,52],[96,34]],
  [[-34,118],[-70,95],[-120,50],[-165,10],[-196,-28]],
+ [[-196,-28],[-178,-52],[-166,-72],[-164,-88]],
  [[96,34],[60,-40],[30,-100],[10,-150],[0,-176]],
 ];
 export const AREAS=[
@@ -25,6 +31,7 @@ export const AREAS=[
  {id:'chapel',name:'Sunken Chapel of Vael',x:96,z:16,r:60},
  {id:'barrow',name:'Barrow Deeps',x:-190,z:-20,r:80},
  {id:'summit',name:'The Stilled Heart',x:0,z:-230,r:130},
+ {id:'ossuary',name:'The Ossuary Vaults',x:-135,z:-100,r:46},
 ];
 export function areaAt(x,z){ let best=null,bd=1e9; for(const a of AREAS){const d=Math.hypot(x-a.x,z-a.z)/a.r; if(d<1&&d<bd){bd=d;best=a}} return best }
 
