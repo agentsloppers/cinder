@@ -2,6 +2,7 @@
 // Combat actions (attacks, damage in/out, flasks, spirits) live in player_combat.js and are mixed in.
 import {THREE} from './engine.js';
 import {Assets,stylize} from './assets.js';
+import {buildKnight,retargetClip} from './knight_rig.js';
 import {Terrain} from './terrain.js';
 import {Colliders} from './colliders.js';
 import {Input} from './input.js';
@@ -29,12 +30,12 @@ const PlayerProto={
  get maxHp(){return maxHp(this.stats)}, get maxSt(){return maxSt(this.stats)}, get maxFp(){return maxFp(this.stats)},
  get weapon(){return WEAPON_BY_ID[this.weaponId]}, get moves(){return MOVESETS[this.weapon.cls]},
  async init(scene){
-  const g=await Assets.load('chars/Knight.glb'); this.model=Assets.cloneChar(g); stylize(this.model,{rough:0.75}); this.model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.frustumCulled=false}});
+  const kr=await buildKnight(); this.model=kr.model; this.ratio=kr.ratio; this.model.scale.set(1.24,1.12,1.24); this.model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.frustumCulled=false}});
   this.root.add(this.model); scene.add(this.root); this.mixer=new THREE.AnimationMixer(this.model); this.actions={};
   this.model.traverse(o=>{ if((o.name==='handslot.r'||o.name==='handslotr'))this.handR=o; if((o.name==='handslot.l'||o.name==='handslotl'))this.handL=o; });
   await this.equip(this.weaponId); this.play('Idle_A',{fade:0}); this.syncPos();
  },
- clip(name){ let a=this.actions[name]; if(!a){ const c=Assets.clips[name]; if(!c){console.warn('missing clip',name);return null} a=this.actions[name]=this.mixer.clipAction(c); } return a },
+ clip(name){ let a=this.actions[name]; if(!a){ const c0=Assets.clips[name]; if(!c0){console.warn('missing clip',name);return null} const c=retargetClip(c0,this.ratio); a=this.actions[name]=this.mixer.clipAction(c); } return a },
  // play a clip with crossfade; opts: fade, speed, once, from (start time)
  play(name,o={}){ const a=this.clip(name); if(!a)return null; const fade=o.fade??0.14;
   if(this.activeAction===a&&!o.restart){ a.timeScale=o.speed||1; return a }
@@ -44,7 +45,7 @@ const PlayerProto={
   const w=WEAPON_BY_ID[id]; if(!w)return; this.weaponId=id;
   for(const o of [this.wR,this.wL]){ if(o&&o.parent)o.parent.remove(o) } this.wR=this.wL=null;
   const mk=async path=>{ const g=await Assets.load(path+'.gltf'); const m=g.scene.clone(true); stylize(m,{rough:0.5}); return m };
-  const wm=await mk(w.model); const holder=new THREE.Group(); holder.add(wm); holder.scale.setScalar(w.scale||1); this.handR.add(holder); this.wR=holder;
+  const wm=await mk(w.model); const holder=new THREE.Group(); holder.add(wm); holder.scale.setScalar((w.scale||1)*0.8); this.handR.add(holder); this.wR=holder;
   if(w.cls==='fist'){ holder.visible=true }
   if(w.off==='dual'&&w.cls!=='fist'){ const m2=await mk(w.model); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2 }
   else if(w.off==='dual'){ const m2=await mk(w.model); const h2=new THREE.Group();h2.add(m2);this.handL.add(h2);this.wL=h2 }

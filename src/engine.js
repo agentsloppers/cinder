@@ -21,7 +21,7 @@ export const Engine={
  init(canvas){
   const q=(localStorage.getItem('ch_quality')||'high'); this.quality=q;
   const r=this.renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
-  r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap; r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=1.05; r.outputColorSpace=THREE.SRGBColorSpace;
+  r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap; r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=0.92; r.outputColorSpace=THREE.SRGBColorSpace;
   this.scene=new THREE.Scene(); this.camera=new THREE.PerspectiveCamera(62,1,0.1,900);
   this.scene.fog=new THREE.FogExp2(0x2a2a38,0.0085); this.scene.background=new THREE.Color(0x2a2a38);
   // lighting: low dusk sun + cool sky fill

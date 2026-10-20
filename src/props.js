@@ -6,10 +6,12 @@ const CELL=48;
 export const Props={group:new THREE.Group(),list:[],timeU:{value:0},cells:[],tmpl:{},bbox:{},mats:{},
  place(m,x,y,z,ry=0,s=1,o={}){ this.list.push({m,x,y,z,ry,s,o}) },
  swayMat(src,k){ const key=src.uuid+k; if(this.mats[key])return this.mats[key]; const m=src.clone(); if(m.map)m.map.colorSpace=THREE.SRGBColorSpace; m.roughness=0.95; m.metalness=0;
-  if(k>0){ m.onBeforeCompile=sh=>{ sh.uniforms.uTime=this.timeU; sh.vertexShader='uniform float uTime;\n'+sh.vertexShader.replace('#include <begin_vertex>',`vec3 transformed=vec3(position);
+  m.onBeforeCompile=sh=>{ sh.uniforms.uTime=this.timeU;
+   sh.fragmentShader=sh.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\n float lumA=dot(diffuseColor.rgb,vec3(.3,.59,.11)); diffuseColor.rgb=mix(vec3(lumA),diffuseColor.rgb,.42)*vec3(.66,.63,.6);');
+   if(k>0) sh.vertexShader='uniform float uTime;\n'+sh.vertexShader.replace('#include <begin_vertex>',`vec3 transformed=vec3(position);
    #ifdef USE_INSTANCING
    float sw=max(position.y,0.)*${(0.05*k).toFixed(3)}; transformed.x+=sin(uTime*1.3+instanceMatrix[3].x*.3+instanceMatrix[3].z*.2+position.y)*sw; transformed.z+=cos(uTime*1.1+instanceMatrix[3].z*.3+position.y)*sw*.7;
-   #endif`)}; m.customProgramCacheKey=()=>'sway'+k; }
+   #endif`)}; m.customProgramCacheKey=()=>'sway'+k+'d';
   return this.mats[key]=m },
  async build(scene,onProg){
   const names=[...new Set(this.list.map(p=>p.m))]; let n=0;
