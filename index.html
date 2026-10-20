@@ -10,14 +10,14 @@
 canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none}
 #load{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#1b1410,#050406);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:50}
 #load .l{font:900 64px Cinzel,serif;letter-spacing:.3em;color:var(--g);text-shadow:0 0 30px #d9742a88}
-#lbarw{width:320px;height:3px;background:#2a2218}#lbar{height:100%;width:0;background:var(--g);transition:width .3s}#lt{color:var(--dim);font-size:13px;letter-spacing:.1em}
+#lbarw{width:320px;height:4px;background:#2a2218}#lbar{height:100%;width:0;background:#e8873a;box-shadow:0 0 10px #e8873a;transition:width .3s}#lt{color:var(--dim);font-size:13px;letter-spacing:.1em}
 #err{display:none;position:fixed;left:10px;bottom:10px;background:#4a0d0d;color:#fff;padding:8px 12px;z-index:99;font-size:12px;border-radius:6px;max-width:80vw}
 #ui{position:fixed;inset:0;pointer-events:none;z-index:5}
 #hud{display:none}
 .bars{position:absolute;left:28px;top:24px;display:flex;flex-direction:column;gap:6px}
-.bar{height:14px;background:#0009;border:1px solid #000;box-shadow:0 0 0 1px #6a5a3a;position:relative;overflow:hidden}
+.bar{height:9px;background:linear-gradient(#0b0a0bcc,#1a1817cc);border:1px solid #000;box-shadow:0 0 0 1px #5a4a2e,0 2px 6px #0008;position:relative;overflow:hidden}.bar i{box-shadow:inset 0 1px 0 #fff2,inset 0 -1px 0 #0006}
 .bar i,.bar b{position:absolute;left:0;top:0;bottom:0}
-#hpbar{height:16px}#hpf{background:linear-gradient(#d8453a,#8a1c1c);z-index:2}#hpg{background:#e8b04a;z-index:1}
+#hpbar{height:11px}#hpf{background:linear-gradient(#9a2b24,#5a1a1a);z-index:2}#hpg{background:#c9a25a99;z-index:1}#stf{background:linear-gradient(#8a8a5a,#4a4c30)!important}#fpf{background:linear-gradient(#5a6a8a,#2e3650)!important}
 #stbar{height:11px}#stf{background:linear-gradient(#6fd06a,#2f8a3a)}
 #fpbar{height:9px}#fpf{background:linear-gradient(#5aa4ff,#2a54b0)}
 #flasks{font-size:14px;color:var(--g);margin-top:4px;text-shadow:0 1px 2px #000}
