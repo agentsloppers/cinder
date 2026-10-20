@@ -3,6 +3,7 @@ import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.j
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js';
 import {OutputPass} from 'three/examples/jsm/postprocessing/OutputPass.js';
 export {THREE};
 
@@ -29,6 +30,7 @@ export const Engine={
   this.sun=new THREE.DirectionalLight(0xffb27a,3.1); this.sun.position.set(-60,45,-30); this.sun.castShadow=true; const sh=this.sun.shadow;
   sh.mapSize.set(q==='low'?1024:2048,q==='low'?1024:2048); const S=48; Object.assign(sh.camera,{left:-S,right:S,top:S,bottom:-S,near:1,far:220}); sh.bias=-0.0006; sh.normalBias=0.04;
   this.scene.add(this.sun); this.scene.add(this.sun.target);
+  try{ const pm=new THREE.PMREMGenerator(r); new RGBELoader().load('/a/ph/misty_pines/misty_pines_1k.hdr',t=>{ this.scene.environment=pm.fromEquirectangular(t).texture; this.scene.environmentIntensity=0.35; t.dispose(); pm.dispose() },undefined,()=>{}); }catch(e){}
   this.sunDir=new THREE.Vector3(-60,45,-30).normalize();
   this.buildSky();
   this.composer=null; this.setupComposer();

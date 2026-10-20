@@ -6,7 +6,7 @@ export const SIZE=640, HALF=SIZE/2, CELL=1, N=SIZE/CELL+1, CH=64;
 
 // Designed locations. h:null keeps natural height at the centre. r=flat core, b=blend distance
 export const FLATS=[
- {id:'ember',x:0,z:232,r:13,b:22,h:3.0},
+ {id:'ember',x:0,z:232,r:13,b:26,h:null},
  {id:'rootgate',x:-34,z:118,r:9,b:16,h:null},
  {id:'chapel',x:96,z:16,r:34,b:30,h:9.0},
  {id:'chapelEntry',x:70,z:70,r:10,b:14,h:null},
@@ -49,7 +49,6 @@ function baseHeight(x,z){
  // eastern ridge wall
  h+=smooth(260,300,x)*30*(0.6+fbm(z/50,9,2));
  // bowl at start so the hollow feels enclosed
- const bx=x,bz=z-232; h+=smooth(40,120,Math.hypot(bx*0.8,bz))*6;
  return h;
 }
 export function rawHeight(x,z){
@@ -85,10 +84,32 @@ export const Terrain={
   for(let j=0;j<n;j++)for(let i=0;i<n;i++){ const x=ox+i*step,z=oz+j*step,h=this.h(x,z),k=j*n+i; pos[k*3]=x;pos[k*3+1]=h;pos[k*3+2]=z; this.normal(x,z,nv); nor[k*3]=nv.x;nor[k*3+1]=nv.y;nor[k*3+2]=nv.z; this.color(x,z,h,this.slope(x,z),c); col[k*3]=c.r;col[k*3+1]=c.g;col[k*3+2]=c.b; uv[k*2]=x/6;uv[k*2+1]=z/6; }
   const idx=new Uint32Array((n-1)*(n-1)*6); let q=0; for(let j=0;j<n-1;j++)for(let i=0;i<n-1;i++){const a=j*n+i,b=a+1,d=a+n,e=d+1; idx[q++]=a;idx[q++]=d;idx[q++]=b;idx[q++]=b;idx[q++]=d;idx[q++]=e}
   const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('normal',new THREE.BufferAttribute(nor,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));g.setAttribute('uv',new THREE.BufferAttribute(uv,2)); g.setIndex(new THREE.BufferAttribute(idx,1)); g.computeBoundingSphere(); return g },
+ pbrMat(){ const L=new THREE.TextureLoader(), B='/a/ph/';
+  const tx=(u,srgb)=>{const t=L.load(B+u); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=8; if(srgb)t.colorSpace=THREE.SRGBColorSpace; return t};
+  const gD=tx('ground/forest_leaves_04_diff_1k.jpg',1),gN=tx('ground/forest_leaves_04_nor_gl_1k.jpg'),rD=tx('rock/rock_face_03_diff_1k.jpg',1),rN=tx('rock/rock_face_03_nor_gl_1k.jpg'),mD=tx('mudrock/brown_mud_rocks_01_diff_1k.jpg',1);
+  const mat=new THREE.MeshStandardMaterial({vertexColors:true,map:gD,normalMap:gN,normalScale:new THREE.Vector2(0.9,0.9),roughness:0.95,metalness:0});
+  mat.onBeforeCompile=sh=>{ sh.uniforms.rockD={value:rD}; sh.uniforms.mudD={value:mD}; sh.uniforms.rockN={value:rN};
+   sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vWP; varying vec3 vWN;').replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvWP=(modelMatrix*vec4(transformed,1.)).xyz; vWN=normalize(mat3(modelMatrix)*objectNormal);');
+   sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vWP; varying vec3 vWN; uniform sampler2D rockD,mudD,rockN;')
+   .replace('#include <map_fragment>',`
+    vec3 wn=normalize(vWN); vec3 bw=pow(abs(wn),vec3(4.)); bw/=dot(bw,vec3(1.));
+    vec3 gcol=texture2D(map,vWP.xz/5.).rgb; vec3 gcol2=texture2D(map,vWP.xz/23.+.37).rgb; gcol=mix(gcol,gcol2,.35);
+    vec3 mcol=texture2D(mudD,vWP.xz/6.).rgb;
+    vec3 rx=texture2D(rockD,vWP.zy/9.).rgb, rz=texture2D(rockD,vWP.xy/9.).rgb, ry=texture2D(rockD,vWP.xz/9.).rgb;
+    vec3 rcol=rx*bw.x+rz*bw.z+ry*bw.y;
+    float slope=1.-wn.y; float rk=smoothstep(.28,.5,slope);
+    float lum=dot(vColor,vec3(.299,.587,.114));
+    float pathy=smoothstep(.0,.12,vColor.r-vColor.g); // reddish-brown vertex tint marks paths/dirt
+    vec3 base=mix(gcol,mcol,clamp(pathy*1.5,0.,1.));
+    base=mix(base,rcol,rk);
+    vec3 tint=mix(vec3(1.),vColor/max(lum,.05),.35); // keep regional hue, gently
+    diffuseColor.rgb*=base*tint*(.55+lum*1.4);
+   `).replace('#include <color_fragment>','');
+  }; return mat },
  detailTex(){ const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const id=x.createImageData(256,256);const r=mulberry(9);
   for(let j=0;j<256;j++)for(let i=0;i<256;i++){const v=0.62+0.38*(fbm(i/16,j/16,3)*0.8+(r()-0.5)*0.5); const k=(j*256+i)*4; const b=clamp(v,0,1)*255; id.data[k]=b;id.data[k+1]=b;id.data[k+2]=b;id.data[k+3]=255}
   x.putImageData(id,0,0); const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=4; return t },
- build(scene){ this.bake(); const mat=new THREE.MeshStandardMaterial({vertexColors:true,map:this.detailTex(),roughness:1,metalness:0}); this.mat=mat;
+ build(scene){ this.bake(); const mat=this.pbrMat(); this.mat=mat;
   const nC=SIZE/CH; for(let cz=0;cz<nC;cz++)for(let cx=0;cx<nC;cx++){ const hi=new THREE.Mesh(this.buildGeo(cx,cz,1),mat),lo=new THREE.Mesh(this.buildGeo(cx,cz,4),mat); hi.receiveShadow=true;lo.receiveShadow=true; hi.visible=false;
    const ctr=new THREE.Vector3(cx*CH-HALF+CH/2,this.h(cx*CH-HALF+CH/2,cz*CH-HALF+CH/2),cz*CH-HALF+CH/2); this.group.add(hi,lo); this.chunks.push({hi,lo,ctr}) }
   scene.add(this.group) },
