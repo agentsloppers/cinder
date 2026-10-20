@@ -32,6 +32,14 @@ export const WEAPONS=[
  W('iron_fists','Ironbound Fists','fist','wb/fistweapon_B',4,30,{str:.7,dex:.4},'The gauntlets of a king who refused a sword.',{len:0.5,off:'dual'}),
  W('moonlit_hatchet','Moonlit Hatchet','axe','wb/axe_C',4,36,{str:.5,dex:.6},'Thrown once at the moon. It came back lighter.',{len:0.9}),
  W('wolfsbane','Wolfsbane Spear','spear','wb/halberd',4,40,{str:.5,dex:.7},'Hunted the wolves of the Gloamwood until there were none. Then it hunted something else.',{len:2.5}),
+ W('pilgrim_cleaver','Pilgrim\'s Cleaver','axe','adv/axe_1handed',3,27,{str:.7,dex:.2},'Carried to the Stilled Heart by a thousand pilgrims. None carried it back.',{len:1.2}),
+ W('ash_saber','Ash Saber','sword','wb/sword_D',3,27,{str:.3,dex:.7},'Light as a held breath. The ash on its edge never wipes clean.',{off:'adv/shield_badge',len:1.4}),
+ W('widows_kiss','Widow\'s Kiss','dagger','adv/dagger',4,30,{str:.2,dex:.9},'Gifted to brides of the Hollow Court. The giver rarely lived to see the wedding.',{len:0.9}),
+ W('vigil_standard','Vigil Standard','spear','wb/spear_A',3,29,{str:.6,dex:.4},'A banner pole with a spearhead where the cloth was. The cloth burned first.',{len:2.4}),
+ W('gloam_bow_staff','Gloamlight Rod','staff','wb/staff_A',4,34,{res:.9,dex:.2},'A rod that drinks the last light of dusk and spits it back.',{len:1.6}),
+ W('gallows_maul','Gallows Maul','hammer','wb/hammer_A',4,48,{str:.9,dex:.1},'Built from the beam of the Rootgate gallows. It knows how to drop things.',{len:1.7,off:null}),
+ W('sunder_blade','Sunderblade','greatsword','adv/sword_2handed',4,52,{str:.8,dex:.3},'Two edges, neither kind. Used to open the Stilled Heart\'s outer doors.',{len:2.2,spd:0.93}),
+ W('heart_eater','Heart-eater','fist','wb/fistweapon_B',5,58,{str:.6,dex:.8},'Gauntlets of the Hollow Court\'s executioner. They are warm. They should not be.',{len:0.8}),
 ];
 export const WEAPON_BY_ID=Object.fromEntries(WEAPONS.map(w=>[w.id,w]));
 export const RARITY={0:{n:'Common',c:'#9a9a9a'},3:{n:'Ember',c:'#7fb4ff'},4:{n:'Ashen',c:'#c58bff'},5:{n:'Heartforged',c:'#ffb347'}};
