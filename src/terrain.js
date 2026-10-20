@@ -88,7 +88,7 @@ export const Terrain={
   const tx=(u,srgb)=>{const t=L.load(B+u); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=8; if(srgb)t.colorSpace=THREE.SRGBColorSpace; return t};
   const gD=tx('ground/forest_leaves_04_diff_1k.jpg',1),gN=tx('ground/forest_leaves_04_nor_gl_1k.jpg'),rD=tx('rock/rock_face_03_diff_1k.jpg',1),rN=tx('rock/rock_face_03_nor_gl_1k.jpg'),mD=tx('mudrock/brown_mud_rocks_01_diff_1k.jpg',1);
   const mat=new THREE.MeshStandardMaterial({vertexColors:true,map:gD,normalMap:gN,normalScale:new THREE.Vector2(0.9,0.9),roughness:0.95,metalness:0});
-  mat.onBeforeCompile=sh=>{ sh.uniforms.rockD={value:rD}; sh.uniforms.mudD={value:mD}; sh.uniforms.rockN={value:rN};
+  if(!(typeof localStorage!=='undefined'&&localStorage.getItem('cinder_safe_shaders'))) mat.onBeforeCompile=sh=>{ sh.uniforms.rockD={value:rD}; sh.uniforms.mudD={value:mD}; sh.uniforms.rockN={value:rN};
    sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vWP; varying vec3 vWN;').replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvWP=(modelMatrix*vec4(transformed,1.)).xyz; vWN=normalize(mat3(modelMatrix)*objectNormal);');
    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vWP; varying vec3 vWN; uniform sampler2D rockD,mudD,rockN;')
    .replace('#include <map_fragment>',`

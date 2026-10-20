@@ -22,6 +22,9 @@ export const Engine={
  init(canvas){
   const q=(localStorage.getItem('ch_quality')||'high'); this.quality=q;
   const r=this.renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
+  r.debug.checkShaderErrors=true; r.debug.onShaderError=(gl,prog,vs,fs)=>{ const log=(gl.getShaderInfoLog(fs)||'')+(gl.getShaderInfoLog(vs)||''); console.warn('CINDER shader fail',log.slice(0,400));
+   try{ fetch('/api/tele',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({ev:[{t:Date.now(),type:'shaderfail',d:log.slice(0,600)}]})}) }catch(_){}
+   if(!localStorage.getItem('cinder_safe_shaders')){ localStorage.setItem('cinder_safe_shaders','1'); setTimeout(()=>location.reload(),300) } };
   r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap; r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=0.92; r.outputColorSpace=THREE.SRGBColorSpace;
   this.scene=new THREE.Scene(); this.camera=new THREE.PerspectiveCamera(62,1,0.1,900);
   this.scene.fog=new THREE.FogExp2(0x2a2a38,0.0085); this.scene.background=new THREE.Color(0x2a2a38);

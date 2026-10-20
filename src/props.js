@@ -6,13 +6,14 @@ const CELL=48;
 export const Props={group:new THREE.Group(),list:[],timeU:{value:0},cells:[],tmpl:{},bbox:{},mats:{},
  place(m,x,y,z,ry=0,s=1,o={}){ this.list.push({m,x,y,z,ry,s,o}) },
  swayMat(src,k,rock){ const key=src.uuid+k+(rock?'r':''); if(this.mats[key])return this.mats[key]; const m=src.clone(); if(m.map)m.map.colorSpace=THREE.SRGBColorSpace; m.roughness=0.95; m.metalness=0;
-  m.onBeforeCompile=sh=>{ sh.uniforms.uTime=this.timeU;
+  const SAFE=(typeof localStorage!=='undefined'&&localStorage.getItem('cinder_safe_shaders'));
+  if(!SAFE) m.onBeforeCompile=sh=>{ sh.uniforms.uTime=this.timeU;
    sh.fragmentShader=sh.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\n float lumA=dot(diffuseColor.rgb,vec3(.3,.59,.11)); diffuseColor.rgb=mix(vec3(lumA),diffuseColor.rgb,.42)*vec3(.66,.63,.6);');
    if(k>0) sh.vertexShader='uniform float uTime;\n'+sh.vertexShader.replace('#include <begin_vertex>',`vec3 transformed=vec3(position);
    #ifdef USE_INSTANCING
    float sw=max(position.y,0.)*${(0.05*k).toFixed(3)}; transformed.x+=sin(uTime*1.3+instanceMatrix[3].x*.3+instanceMatrix[3].z*.2+position.y)*sw; transformed.z+=cos(uTime*1.1+instanceMatrix[3].z*.3+position.y)*sw*.7;
    #endif`)}; m.customProgramCacheKey=()=>'sway'+k+'d'+(rock?'r':'');
-  if(rock){ const ob=m.onBeforeCompile; const T=Props.rockTex||(Props.rockTex=(()=>{const t=new THREE.TextureLoader().load('/a/ph/rock/rock_face_03_diff_1k.jpg');t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t})());
+  if(rock&&!SAFE){ const ob=m.onBeforeCompile; const T=Props.rockTex||(Props.rockTex=(()=>{const t=new THREE.TextureLoader().load('/a/ph/rock/rock_face_03_diff_1k.jpg');t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t})());
    m.onBeforeCompile=sh=>{ ob&&ob(sh); sh.uniforms.rockD={value:T};
     sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vRP; varying vec3 vRN;').replace('#include <project_vertex>','#include <project_vertex>\n vec4 rp=vec4(transformed,1.);\n #ifdef USE_INSTANCING\n rp=instanceMatrix*rp;\n #endif\n vRP=(modelMatrix*rp).xyz; vRN=normalize(mat3(modelMatrix)*objectNormal);');
     sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vRP; varying vec3 vRN; uniform sampler2D rockD;').replace('#include <map_fragment>','#include <map_fragment>\n { vec3 bw=pow(abs(normalize(vRN)),vec3(4.)); bw/=dot(bw,vec3(1.)); vec3 rc=texture2D(rockD,vRP.zy/4.).rgb*bw.x+texture2D(rockD,vRP.xz/4.).rgb*bw.y+texture2D(rockD,vRP.xy/4.).rgb*bw.z; diffuseColor.rgb=rc*1.15; }');
