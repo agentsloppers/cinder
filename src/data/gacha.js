@@ -31,5 +31,6 @@ export const BANNERS=[
  {id:'std',name:'Pilgrim\'s Vigil',sub:'Standard Rite',blurb:'The long road. Every relic of Cinderfall waits in the ash.',featured:[],colA:'#3a2a1c',colB:'#a8642a',limited:false},
  {id:'vael',name:'The Stilled Heart',sub:'Limited Rite · Vael\'s Lament',blurb:'Rate-up: Echo of Vael and Heartstopper. Lose the 50/50 once and the next Heartforged is guaranteed to be featured.',featured:['vael_echo','heartstopper'],colA:'#20203a',colB:'#7a5cff',limited:true},
  {id:'court',name:'The Hollow Court',sub:'Limited Rite · Sentence of Ash',blurb:'Rate-up: Court of Hollows and Heart-eater. Lose the 50/50 once and the next Heartforged is guaranteed to be featured.',featured:['court_of_hollows','heart_eater'],colA:'#2a1020',colB:'#d04a5a',limited:true},
+ {id:'ledger',name:'Ledger of Bones',sub:'Limited Rite · The Chancellor\'s Account',blurb:'Rate-up: Ledger-Cleaver and Chancellor\'s Seal. Lose the 50/50 once and the next Heartforged is guaranteed to be featured.',featured:['ledger_cleaver','chancellors_seal'],colA:'#10202e',colB:'#5ab4e0',limited:true},
 ];
 export const BANNER_BY_ID=Object.fromEntries(BANNERS.map(b=>[b.id,b]));
