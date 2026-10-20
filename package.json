@@ -7,7 +7,8 @@
   "reach": "esbuild tools/reach.js --bundle --platform=node --format=esm --outfile=tools/.reach.mjs --log-level=error --external:three && node tools/.reach.mjs",
   "heat": "node tools/heat.js",
   "sim": "esbuild tools/bots.js --bundle --platform=node --format=esm --outfile=tools/.bots.mjs --log-level=error --external:three && node tools/.bots.mjs",
-  "test": "npm run reach && npm run sim"
+  "test": "npm run reach && npm run sim && npm run combat",
+  "combat": "node tools/combat_build.mjs && node tools/.combat.mjs"
  },
  "keywords": [],
  "author": "",
